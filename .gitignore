@@ -1,0 +1,47 @@
+# ==================== TỰ ĐỘNG IGNORE ====================
+
+# --- File extension bỏ qua ---
+*.txt
+*.sh
+*.md
+
+# --- Ngoại lệ: giữ lại ---
+!taikhoan.txt
+
+# --- Dependencies ---
+node_modules/
+
+# --- Build output ---
+dist/
+build/
+out/
+
+# --- IDE & Editor ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Environment & Secret ---
+.env
+.env.local
+.env.production
+*.pem
+*.key
+
+# --- Log & Cache ---
+*.log
+npm-debug.log*
+.cache/
+.temp/
+.tmp/
+
+# --- Test & Coverage ---
+coverage/
+.nyc_output/
