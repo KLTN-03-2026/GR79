@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lịch sử đơn hàng - Sách Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/profile.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <!-- Breadcrumb -->
+  <div class="container">
+    <div class="breadcrumb-custom">
+      <a href="/">Trang chủ</a>
+      <span class="separator"><i class="bi bi-chevron-right"></i></span>
+      <span class="current">Lịch sử đơn hàng</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="profile-wrapper">
+    <div class="container">
+      <div class="row g-4">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+          <div class="profile-sidebar">
+            <div class="sidebar-user">
+              <div class="sidebar-avatar">
+                <i class="bi bi-person-fill"></i>
+              </div>
+              <div class="sidebar-name" id="sidebarName">---</div>
+              <span class="sidebar-badge">Thành viên</span>
+            </div>
+            <ul class="sidebar-menu">
+              <li><a href="/pages/ho-so.html"><i class="bi bi-person"></i> Hồ sơ cá nhân</a></li>
+              <li><a href="/pages/don-hang.html" class="active"><i class="bi bi-box-seam"></i> Lịch sử đơn hàng</a></li>
+              <li><a href="/pages/thong-bao.html"><i class="bi bi-bell"></i> Thông báo</a></li>
+              <li><a href="/pages/voucher.html"><i class="bi bi-gift"></i> Ví ưu đãi & Voucher</a></li>
+              <li><a href="/pages/dia-chi.html"><i class="bi bi-geo-alt"></i> Địa chỉ giao hàng</a></li>
+              <li><a href="/pages/cai-dat.html"><i class="bi bi-gear"></i> Cài đặt tài khoản</a></li>
+              <li class="menu-divider"></li>
+              <li><a href="#" class="logout-link" onclick="logout(); return false;"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
+            </ul>
+            <div class="sidebar-cards">
+              <div class="sidebar-stat-card">
+                <div class="stat-icon"><i class="bi bi-star-fill"></i></div>
+                <div class="stat-info">
+                  <div class="stat-value" id="sidebarPoints">0 Pts</div>
+                  <div class="stat-label">Điểm tích lũy</div>
+                </div>
+              </div>
+              <div class="sidebar-stat-card">
+                <div class="stat-icon"><i class="bi bi-ticket-perforated"></i></div>
+                <div class="stat-info">
+                  <div class="stat-value" id="sidebarVouchers">0 mã giảm giá</div>
+                  <div class="stat-label">Voucher hiện có</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-lg-9">
+          <div class="profile-header">
+            <div class="profile-header-title">
+              <h2>Lịch sử đơn hàng</h2>
+              <p>Theo dõi và quản lý tất cả đơn hàng của bạn</p>
+            </div>
+          </div>
+
+          <!-- Order Tabs -->
+          <div class="order-tabs" id="orderTabs">
+            <button class="order-tab active" data-status="">Tất cả</button>
+            <button class="order-tab" data-status="pending">Chờ xác nhận</button>
+            <button class="order-tab" data-status="shipping">Đang giao</button>
+            <button class="order-tab" data-status="delivered">Đã giao</button>
+            <button class="order-tab" data-status="cancelled">Đã hủy</button>
+          </div>
+
+          <!-- Orders List -->
+          <div id="ordersList">
+            <div class="text-center py-5">
+              <div class="spinner-custom mx-auto"></div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <nav id="paginationWrapper" class="d-none">
+            <ul class="pagination pagination-custom justify-content-center mt-3" id="pagination"></ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Detail Modal -->
+  <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-receipt"></i> Chi tiết đơn hàng</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="orderDetailBody">Đang tải...</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/orders.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Đơn hàng - Admin Sách Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <i class="bi bi-book-half"></i>
+      <span>Sach Hub <span class="badge-admin">ADMIN</span></span>
+    </div>
+    <nav class="sidebar-menu">
+      <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="sach.html"><i class="bi bi-book"></i> Quản lý sách</a>
+      <a href="don-hang.html" class="active"><i class="bi bi-box-seam"></i> Đơn hàng</a>
+      <a href="danh-muc.html"><i class="bi bi-grid"></i> Danh mục</a>
+      <a href="nguoi-dung.html" data-role="admin"><i class="bi bi-people"></i> Người dùng</a>
+      <a href="khuyen-mai.html" data-role="admin"><i class="bi bi-tag"></i> Khuyến mãi</a>
+      <a href="blog.html" data-role="admin"><i class="bi bi-newspaper"></i> Blog</a>
+      <a href="lien-he.html"><i class="bi bi-chat-dots"></i> Liên hệ</a>
+      <a href="chat.html" data-role="staff"><i class="bi bi-headset"></i> Chat</a>
+      <a href="thong-bao.html" data-role="admin"><i class="bi bi-bell"></i> Thông báo</a>
+      <a href="tuyen-dung.html" data-role="admin"><i class="bi bi-briefcase"></i> Tuyển dụng</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="/"><i class="bi bi-arrow-left-circle"></i> Về Website</a>
+      <button class="btn-logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="topbar-title">
+        <h1>Quản lý Đơn hàng</h1>
+        <p>Theo dõi và xử lý đơn hàng</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-icon"><i class="bi bi-search"></i></button>
+        <button class="btn-icon">
+          <i class="bi bi-bell"></i>
+          <span class="badge-dot"></span>
+        </button>
+        <div class="topbar-avatar" id="avatarUser">A</div>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div class="admin-card">
+        <!-- Tab filters -->
+        <div class="tab-filters">
+          <button class="tab-btn active" data-status="" onclick="filterByStatus(this)">
+            Tất cả <span class="count" id="countAll">0</span>
+          </button>
+          <button class="tab-btn" data-status="pending" onclick="filterByStatus(this)">
+            Chờ xác nhận <span class="count" id="countPending">0</span>
+          </button>
+          <button class="tab-btn" data-status="confirmed" onclick="filterByStatus(this)">
+            Đã xác nhận <span class="count" id="countConfirmed">0</span>
+          </button>
+          <button class="tab-btn" data-status="shipping" onclick="filterByStatus(this)">
+            Đang giao <span class="count" id="countShipping">0</span>
+          </button>
+          <button class="tab-btn" data-status="delivered" onclick="filterByStatus(this)">
+            Đã giao <span class="count" id="countDelivered">0</span>
+          </button>
+          <button class="tab-btn" data-status="cancelled" onclick="filterByStatus(this)">
+            Đã hủy <span class="count" id="countCancelled">0</span>
+          </button>
+        </div>
+
+        <!-- Table -->
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Mã ĐH</th>
+                <th>Khách hàng</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Thanh toán</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTable">
+              <tr><td colspan="7" class="text-center py-4">Đang tải...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="admin-pagination">
+          <div class="page-info" id="pageInfo">Hiển thị 0 kết quả</div>
+          <nav>
+            <ul class="pagination" id="pagination"></ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Order Detail Modal -->
+  <div class="modal fade" id="orderModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Chi tiết Đơn hàng <span id="orderCode" class="text-primary"></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="orderDetail">
+          <div class="text-center py-4">Đang tải...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toastContainer" class="toast-container-admin"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/admin/orders.js"></script>
+</body>
+</html>

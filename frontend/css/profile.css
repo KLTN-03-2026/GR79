@@ -1,0 +1,577 @@
+/* ====== PROFILE PAGE STYLES ====== */
+
+.profile-wrapper {
+  padding: 30px 0 60px;
+  min-height: 60vh;
+}
+
+/* ====== SIDEBAR ====== */
+.profile-sidebar {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.sidebar-user {
+  text-align: center;
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 12px;
+  border: 3px solid var(--primary);
+}
+
+.sidebar-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.sidebar-badge {
+  display: inline-block;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 20px;
+}
+
+/* ====== SIDEBAR MENU ====== */
+.sidebar-menu {
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-gray);
+  transition: var(--transition);
+  border-left: 3px solid transparent;
+}
+
+.sidebar-menu li a:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.sidebar-menu li a.active {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 600;
+  border-left-color: var(--primary);
+}
+
+.sidebar-menu li a i {
+  font-size: 18px;
+  width: 22px;
+  text-align: center;
+}
+
+.sidebar-menu li.menu-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0;
+}
+
+.sidebar-menu li a.logout-link {
+  color: var(--danger);
+}
+
+.sidebar-menu li a.logout-link:hover {
+  background: #FEF2F2;
+  color: var(--danger);
+}
+
+/* ====== SIDEBAR CARDS ====== */
+.sidebar-cards {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-stat-card {
+  background: var(--primary-light);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-stat-card .stat-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.sidebar-stat-card .stat-info {
+  flex: 1;
+}
+
+.sidebar-stat-card .stat-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.sidebar-stat-card .stat-label {
+  font-size: 12px;
+  color: var(--text-gray);
+}
+
+/* ====== PROFILE CONTENT ====== */
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.profile-header-title h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.profile-header-title p {
+  font-size: 14px;
+  color: var(--text-gray);
+  margin: 0;
+}
+
+/* ====== PROFILE CARD ====== */
+.profile-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.profile-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-card-title i {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+.profile-form-group {
+  margin-bottom: 18px;
+}
+
+.profile-form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-gray);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.profile-form-group .form-value {
+  font-size: 15px;
+  color: var(--text-dark);
+  padding: 10px 0;
+  font-weight: 500;
+}
+
+.profile-form-group input,
+.profile-form-group select,
+.profile-form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-dark);
+  background: var(--bg-white);
+  transition: var(--transition);
+  outline: none;
+}
+
+.profile-form-group input:focus,
+.profile-form-group select:focus,
+.profile-form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(232, 73, 29, 0.1);
+}
+
+.profile-form-group input:disabled,
+.profile-form-group select:disabled {
+  background: var(--bg-alt);
+  color: var(--text-gray);
+  cursor: not-allowed;
+}
+
+/* Radio group */
+.gender-group {
+  display: flex;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.gender-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dark);
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 0;
+}
+
+.gender-group input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ====== SECURITY CARD ====== */
+.security-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg-alt);
+  border-radius: var(--radius-md);
+}
+
+.security-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.security-info {
+  flex: 1;
+}
+
+.security-info h6 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 2px;
+}
+
+.security-info p {
+  font-size: 13px;
+  color: var(--text-gray);
+  margin: 0;
+}
+
+/* ====== MODAL ====== */
+.modal-custom .modal-header {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 24px;
+}
+
+.modal-custom .modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.modal-custom .modal-body {
+  padding: 24px;
+}
+
+.modal-custom .modal-footer {
+  border-top: 1px solid var(--border);
+  padding: 16px 24px;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field .toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-gray);
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ====== ORDERS PAGE ====== */
+.order-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.order-tab {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-gray);
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  transition: var(--transition);
+}
+
+.order-tab:hover {
+  color: var(--primary);
+}
+
+.order-tab.active {
+  color: var(--primary);
+}
+
+.order-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+}
+
+/* ====== ORDER CARD ====== */
+.order-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.order-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.order-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.order-code {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.order-date {
+  font-size: 13px;
+  color: var(--text-gray);
+}
+
+.order-status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.order-card-body {
+  padding: 16px 20px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+}
+
+.order-item + .order-item {
+  border-top: 1px solid var(--border);
+}
+
+.order-item-img {
+  width: 60px;
+  height: 75px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg-alt);
+}
+
+.order-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.order-item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order-item-qty {
+  font-size: 13px;
+  color: var(--text-gray);
+}
+
+.order-item-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.order-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.order-total {
+  font-size: 15px;
+  color: var(--text-dark);
+}
+
+.order-total strong {
+  color: var(--primary);
+  font-size: 17px;
+}
+
+.order-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ====== EMPTY STATE ====== */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-state i {
+  font-size: 56px;
+  color: var(--border);
+  margin-bottom: 16px;
+}
+
+.empty-state h5 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: var(--text-gray);
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 991px) {
+  .profile-sidebar {
+    margin-bottom: 20px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .order-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .order-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .order-item-name {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 576px) {
+  .order-tabs {
+    gap: 0;
+  }
+
+  .order-tab {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .gender-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

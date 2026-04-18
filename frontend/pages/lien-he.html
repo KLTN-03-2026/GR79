@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liên Hệ - Sách Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/contact.css">
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-custom">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+          <li class="breadcrumb-item active">Liên hệ</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="contact-hero">
+    <div class="container">
+      <h1>Liên Hệ Với Sách Hub</h1>
+      <p>Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn. Hãy liên hệ với chúng tôi qua các kênh bên dưới.</p>
+    </div>
+  </section>
+
+  <!-- Contact Info + Form -->
+  <section class="contact-info-section">
+    <div class="container">
+      <div class="row g-4">
+        <!-- Left: Info -->
+        <div class="col-lg-5">
+          <div class="info-card mb-4">
+            <h3>Thông tin công ty</h3>
+            <div class="info-item">
+              <div class="info-icon"><i class="bi bi-geo-alt"></i></div>
+              <div class="info-text">
+                <h5>Địa chỉ</h5>
+                <p>3 Quang Trung, Hải Châu, TP. Đà Nẵng</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon"><i class="bi bi-telephone"></i></div>
+              <div class="info-text">
+                <h5>Số điện thoại</h5>
+                <p><a href="tel:0123456789">0123456789</a></p>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon"><i class="bi bi-envelope"></i></div>
+              <div class="info-text">
+                <h5>Email</h5>
+                <p><a href="mailto:support@sachhub.vn">support@sachhub.vn</a></p>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon"><i class="bi bi-clock"></i></div>
+              <div class="info-text">
+                <h5>Giờ làm việc</h5>
+                <p>Thứ 2 - Chủ nhật: 8:00 - 21:00</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3>Kênh tư vấn trực tuyến</h3>
+            <div class="channel-cards">
+              <div class="channel-card">
+                <i class="bi bi-headset"></i>
+                <h5>Hotline</h5>
+                <p>0123456789</p>
+              </div>
+              <div class="channel-card">
+                <i class="bi bi-envelope-at"></i>
+                <h5>Email hợp tác</h5>
+                <p>hoptac@sachhub.vn</p>
+              </div>
+              <div class="channel-card">
+                <i class="bi bi-chat-dots"></i>
+                <h5>Zalo OA</h5>
+                <p>Sách Hub</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Form -->
+        <div class="col-lg-7">
+          <div class="contact-form-card">
+            <h3>Gửi Tin Nhắn Cho Chúng Tôi</h3>
+            <p class="subtitle">Điền thông tin bên dưới, chúng tôi sẽ phản hồi trong vòng 24 giờ.</p>
+
+            <form id="contactForm" class="contact-form">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="ctName" required placeholder="Nguyễn Văn A">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email <span class="text-danger">*</span></label>
+                  <input type="email" class="form-control" id="ctEmail" required placeholder="email@example.com">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Số điện thoại</label>
+                  <input type="tel" class="form-control" id="ctPhone" placeholder="0912 345 678">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Chủ đề <span class="text-danger">*</span></label>
+                  <select class="form-select" id="ctSubject" required>
+                    <option value="">-- Chọn chủ đề --</option>
+                    <option value="ho-tro-don-hang">Hỗ trợ đơn hàng</option>
+                    <option value="doi-tra-hoan-tien">Đổi trả / Hoàn tiền</option>
+                    <option value="hop-tac-kinh-doanh">Hợp tác kinh doanh</option>
+                    <option value="gop-y-khieu-nai">Góp ý / Khiếu nại</option>
+                    <option value="khac">Khác</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+                  <textarea class="form-control" id="ctMessage" required placeholder="Nhập nội dung tin nhắn của bạn..."></textarea>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn-submit" id="ctSubmitBtn">
+                    <i class="bi bi-send"></i> Gửi tin nhắn
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <div class="container">
+      <h2>Câu Hỏi Thường Gặp</h2>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true">
+                  Thời gian giao hàng của Sách Hub là bao lâu?
+                </button>
+              </h2>
+              <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Đối với nội thành TP.HCM và Hà Nội, thời gian giao hàng từ 1-2 ngày làm việc. Các tỉnh thành khác từ 3-5 ngày làm việc. Sách Hub miễn phí giao hàng cho đơn hàng từ 300.000đ trở lên.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Chính sách đổi trả sách như thế nào?
+                </button>
+              </h2>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Sách Hub chấp nhận đổi trả trong vòng 7 ngày kể từ ngày nhận hàng nếu sách bị lỗi in, rách, thiếu trang hoặc giao sai sản phẩm. Sách đổi trả cần giữ nguyên hiện trạng ban đầu.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                  Sách Hub có hỗ trợ thanh toán online không?
+                </button>
+              </h2>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Có, Sách Hub hỗ trợ nhiều hình thức thanh toán: thanh toán khi nhận hàng (COD), chuyển khoản ngân hàng, ví điện tử (MoMo, ZaloPay), thẻ tín dụng/ghi nợ qua VNPay.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                  Làm sao để trở thành đối tác phân phối của Sách Hub?
+                </button>
+              </h2>
+              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Bạn có thể gửi email về hoptac@sachhub.vn với thông tin doanh nghiệp và nhu cầu hợp tác. Đội ngũ kinh doanh của chúng tôi sẽ liên hệ lại trong vòng 48 giờ làm việc.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section class="map-section">
+    <div class="container">
+      <h2>Vị Trí Của Sách Hub</h2>
+      <div class="map-wrapper">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3833.8503269362487!2d108.21194867495!3d16.07408688888!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219c792252a13%3A0xd4b1e30697fe227a!2s3+Quang+Trung%2C+H%E1%BA%A3i+Ch%C3%A2u%2C+%C4%90%C3%A0+N%E1%BA%B5ng!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/contact.js"></script>
+</body>
+</html>

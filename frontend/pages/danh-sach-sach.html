@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh sách sách - Sách Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/book-list.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container py-4">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb-custom">
+        <a href="/">Trang chủ</a>
+        <span class="separator"><i class="bi bi-chevron-right"></i></span>
+        <span class="current" id="breadcrumbTitle">Danh sách sách</span>
+      </div>
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 id="pageTitle">Tất cả sách</h1>
+        <span class="result-count" id="resultCount"></span>
+      </div>
+
+      <div class="row">
+        <!-- Filter Sidebar -->
+        <div class="col-lg-3">
+          <button class="mobile-filter-toggle" id="mobileFilterBtn">
+            <i class="bi bi-funnel"></i> Bộ lọc
+          </button>
+          <div class="filter-overlay" id="filterOverlay"></div>
+          <aside class="filter-sidebar" id="filterSidebar">
+            <div class="filter-close">
+              <span>Bộ lọc</span>
+              <button id="filterCloseBtn"><i class="bi bi-x-lg"></i></button>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="filter-section">
+              <div class="filter-title">
+                Danh mục
+                <i class="bi bi-chevron-down"></i>
+              </div>
+              <ul class="filter-category-list" id="filterCategories">
+                <!-- Load via JS -->
+              </ul>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="filter-section">
+              <div class="filter-title">
+                Khoảng giá
+                <i class="bi bi-chevron-down"></i>
+              </div>
+              <ul class="price-range-list">
+                <li>
+                  <label>
+                    <input type="radio" name="priceRange" value="0-50000">
+                    Dưới 50.000đ
+                  </label>
+                </li>
+                <li>
+                  <label>
+                    <input type="radio" name="priceRange" value="50000-100000">
+                    50.000đ - 100.000đ
+                  </label>
+                </li>
+                <li>
+                  <label>
+                    <input type="radio" name="priceRange" value="100000-200000">
+                    100.000đ - 200.000đ
+                  </label>
+                </li>
+                <li>
+                  <label>
+                    <input type="radio" name="priceRange" value="200000-0">
+                    Trên 200.000đ
+                  </label>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Rating Filter -->
+            <div class="filter-section">
+              <div class="filter-title">
+                Đánh giá
+                <i class="bi bi-chevron-down"></i>
+              </div>
+              <ul class="rating-filter-list">
+                <li>
+                  <label>
+                    <input type="radio" name="ratingFilter" value="5">
+                    <span class="stars">
+                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </span>
+                    <span class="rating-text">5 sao</span>
+                  </label>
+                </li>
+                <li>
+                  <label>
+                    <input type="radio" name="ratingFilter" value="4">
+                    <span class="stars">
+                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star empty"></i>
+                    </span>
+                    <span class="rating-text">Từ 4 sao</span>
+                  </label>
+                </li>
+                <li>
+                  <label>
+                    <input type="radio" name="ratingFilter" value="3">
+                    <span class="stars">
+                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star empty"></i><i class="bi bi-star empty"></i>
+                    </span>
+                    <span class="rating-text">Từ 3 sao</span>
+                  </label>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Filter Actions -->
+            <div class="filter-section">
+              <div class="filter-actions">
+                <button class="btn-apply" onclick="applyFilters()">Áp dụng</button>
+                <button class="btn-reset" onclick="resetFilters()">Xóa bộ lọc</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Book Grid -->
+        <div class="col-lg-9">
+          <!-- Active Filters -->
+          <div class="active-filters" id="activeFilters"></div>
+
+          <!-- Sort Bar -->
+          <div class="sort-bar">
+            <div class="d-flex align-items-center gap-2">
+              <span class="sort-label">Sắp xếp theo:</span>
+              <div class="sort-options">
+                <button class="sort-btn active" data-sort="newest" onclick="changeSort('newest', this)">Mới nhất</button>
+                <button class="sort-btn" data-sort="best_selling" onclick="changeSort('best_selling', this)">Bán chạy</button>
+                <button class="sort-btn" data-sort="price_asc" onclick="changeSort('price_asc', this)">Giá tăng</button>
+                <button class="sort-btn" data-sort="price_desc" onclick="changeSort('price_desc', this)">Giá giảm</button>
+                <button class="sort-btn" data-sort="name_asc" onclick="changeSort('name_asc', this)">Tên A-Z</button>
+              </div>
+            </div>
+            <div class="view-mode">
+              <button class="active" onclick="setViewMode('grid', this)" title="Lưới"><i class="bi bi-grid-3x3-gap"></i></button>
+              <button onclick="setViewMode('list', this)" title="Danh sách"><i class="bi bi-list-ul"></i></button>
+            </div>
+          </div>
+
+          <!-- Book Grid -->
+          <div class="book-grid" id="bookGrid">
+            <div class="text-center py-5">
+              <div class="spinner-custom mx-auto"></div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <nav class="mt-4" id="paginationNav" style="display: none;">
+            <ul class="pagination pagination-custom justify-content-center" id="pagination">
+              <!-- Load via JS -->
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/book-list.js"></script>
+</body>
+</html>

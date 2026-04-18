@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sách Hub - Nhà sách trực tuyến hàng đầu Việt Nam</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- Banner Section -->
+    <section class="banner-section">
+      <div class="container py-4">
+        <div class="row g-3">
+          <div class="col-lg-8">
+            <div class="banner-main" id="mainBanner">
+              <div class="banner-content">
+                <div class="banner-tag">Sự kiện đặc biệt</div>
+                <h2>Hội Sách Tri Thức 2026</h2>
+                <p>Ưu đãi lên đến 50% cho hàng nghìn đầu sách, chương trình đổi sách cũ lấy sách mới và nhiều hoạt động hấp dẫn.</p>
+                <a href="#" class="btn-primary-custom">Khám phá ngay <i class="bi bi-arrow-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="banner-side">
+              <div class="banner-small mb-3">
+                <h5>Miễn phí vận chuyển</h5>
+                <p>Cho đơn hàng từ 300.000đ</p>
+              </div>
+              <div class="banner-small">
+                <h5>Đổi trả dễ dàng</h5>
+                <p>Trong vòng 7 ngày</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flash Sale -->
+    <section class="py-4">
+      <div class="container">
+        <div class="flash-sale-bar">
+          <span class="flash-title"><i class="bi bi-lightning-charge-fill"></i> Flash Sale</span>
+          <span>Kết thúc sau:</span>
+          <div class="countdown" id="flashCountdown">
+            <span class="time-box" id="hours">08</span>
+            <span>:</span>
+            <span class="time-box" id="minutes">45</span>
+            <span>:</span>
+            <span class="time-box" id="seconds">30</span>
+          </div>
+          <a href="/pages/danh-sach-sach.html?sort=best_selling" class="ms-auto text-white" style="font-size:14px;">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="row g-3" id="flashSaleBooks">
+          <!-- Load via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Sách Bán Chạy -->
+    <section class="py-4">
+      <div class="container">
+        <div class="section-title">
+          <span>Sách Bán Chạy</span>
+          <a href="/pages/danh-sach-sach.html?sort=best_selling" class="view-all">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="row g-3" id="bestSellerBooks">
+          <!-- Load via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Banner giữa trang -->
+    <section class="py-3">
+      <div class="container">
+        <div class="mid-banner">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h3>Ưu đãi đặc biệt dành cho thành viên mới</h3>
+              <p>Đăng ký ngay để nhận voucher giảm 20% cho đơn hàng đầu tiên</p>
+            </div>
+            <div class="col-md-4 text-end">
+              <a href="/pages/dang-ky.html" class="btn-primary-custom">Đăng ký ngay</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sách Mới Phát Hành -->
+    <section class="py-4">
+      <div class="container">
+        <div class="section-title">
+          <span>Sách Mới Phát Hành</span>
+          <a href="/pages/danh-sach-sach.html?sort=newest" class="view-all">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="row g-3" id="newBooks">
+          <!-- Load via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Góc Tri Thức (Blog) -->
+    <section class="py-4">
+      <div class="container">
+        <div class="section-title">
+          <span>Góc Tri Thức</span>
+          <a href="/pages/tin-tuc.html" class="view-all">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="row g-3" id="blogPosts">
+          <!-- Load via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-5">
+      <div class="container">
+        <div class="cta-section text-center">
+          <h3>Đừng bỏ lỡ những trang sách hay!</h3>
+          <p>Đăng ký nhận bản tin để cập nhật sách mới và ưu đãi hấp dẫn</p>
+          <div class="cta-form">
+            <input type="email" placeholder="Nhập email của bạn..." class="form-control-custom">
+            <button class="btn-primary-custom">Đăng ký</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

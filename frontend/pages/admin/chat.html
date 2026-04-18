@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Ho tro - Admin Sach Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/admin.css">
+  <style>
+    /* ===== Admin Chat Layout ===== */
+    .chat-layout {
+      display: flex;
+      height: calc(100vh - 80px);
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #E5E7EB;
+    }
+
+    /* Sidebar danh sach */
+    .chat-sidebar {
+      width: 340px;
+      min-width: 340px;
+      border-right: 1px solid #E5E7EB;
+      display: flex;
+      flex-direction: column;
+      background: #FAFBFC;
+    }
+    .chat-sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid #E5E7EB;
+      background: #fff;
+    }
+    .chat-sidebar-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      color: #1F2937;
+    }
+    .chat-search {
+      position: relative;
+    }
+    .chat-search input {
+      width: 100%;
+      padding: 8px 12px 8px 36px;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .chat-search input:focus {
+      border-color: #2563EB;
+    }
+    .chat-search i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9CA3AF;
+      font-size: 14px;
+    }
+
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .chat-list::-webkit-scrollbar { width: 4px; }
+    .chat-list::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 2px; }
+
+    .chat-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid #F3F4F6;
+      transition: background 0.15s;
+      position: relative;
+    }
+    .chat-item:hover { background: #F0F4FF; }
+    .chat-item.active { background: #EBF0FF; border-left: 3px solid #2563EB; }
+    .chat-item-avatar {
+      width: 42px;
+      height: 42px;
+      background: #2563EB;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .chat-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .chat-item-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: #1F2937;
+      margin-bottom: 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chat-item-time {
+      font-size: 11px;
+      color: #9CA3AF;
+      flex-shrink: 0;
+    }
+    .chat-item-preview {
+      font-size: 13px;
+      color: #6B7280;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chat-item-unread {
+      background: #EF4444;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5px;
+      position: absolute;
+      right: 16px;
+      top: 14px;
+    }
+
+    /* Main chat area */
+    .chat-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .chat-main-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid #E5E7EB;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+    }
+    .chat-main-header-info {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .chat-main-header-avatar {
+      width: 38px;
+      height: 38px;
+      background: #2563EB;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .chat-main-header-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: #1F2937;
+    }
+    .chat-main-header-email {
+      font-size: 12px;
+      color: #9CA3AF;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: #F9FAFB;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 6px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+
+    .chat-msg {
+      display: flex;
+      gap: 8px;
+      max-width: 70%;
+      animation: chatMsgIn 0.2s ease;
+    }
+    @keyframes chatMsgIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .chat-msg.customer { align-self: flex-start; }
+    .chat-msg.admin { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-msg-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+      color: #fff;
+    }
+    .chat-msg.customer .chat-msg-avatar { background: #6B7280; }
+    .chat-msg.admin .chat-msg-avatar { background: #2563EB; }
+    .chat-msg-content {
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+    .chat-msg.customer .chat-msg-content {
+      background: #fff;
+      color: #1F2937;
+      border: 1px solid #E5E7EB;
+      border-top-left-radius: 4px;
+    }
+    .chat-msg.admin .chat-msg-content {
+      background: #2563EB;
+      color: #fff;
+      border-top-right-radius: 4px;
+    }
+    .chat-msg-time {
+      font-size: 11px;
+      color: #9CA3AF;
+      margin-top: 4px;
+    }
+    .chat-msg.admin .chat-msg-time { text-align: right; }
+
+    /* Typing */
+    .chat-typing {
+      display: flex;
+      gap: 8px;
+      align-self: flex-start;
+    }
+    .chat-typing-dots {
+      display: flex;
+      gap: 4px;
+      padding: 10px 14px;
+      background: #fff;
+      border: 1px solid #E5E7EB;
+      border-radius: 14px;
+      border-top-left-radius: 4px;
+    }
+    .chat-typing-dots span {
+      width: 8px;
+      height: 8px;
+      background: #9CA3AF;
+      border-radius: 50%;
+      animation: chatTypingAnim 1.4s infinite;
+    }
+    .chat-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes chatTypingAnim {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    /* Input area */
+    .chat-input-area {
+      padding: 14px 20px;
+      border-top: 1px solid #E5E7EB;
+      background: #fff;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .chat-input-area input {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1px solid #E5E7EB;
+      border-radius: 24px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .chat-input-area input:focus { border-color: #2563EB; }
+    .chat-input-area button {
+      width: 42px;
+      height: 42px;
+      background: #2563EB;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .chat-input-area button:hover { background: #1D4ED8; }
+
+    /* Empty state */
+    .chat-empty {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #9CA3AF;
+      background: #F9FAFB;
+    }
+    .chat-empty i {
+      font-size: 56px;
+      color: #D1D5DB;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .chat-empty h4 {
+      color: #6B7280;
+      margin-bottom: 6px;
+    }
+
+    .chat-no-select {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #9CA3AF;
+      background: #F9FAFB;
+    }
+    .chat-no-select i {
+      font-size: 64px;
+      color: #D1D5DB;
+      margin-bottom: 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .chat-sidebar { width: 100%; min-width: auto; }
+      .chat-main { display: none; }
+      .chat-layout.show-chat .chat-sidebar { display: none; }
+      .chat-layout.show-chat .chat-main { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <i class="bi bi-book-half"></i>
+      <span>Sach Hub <span class="badge-admin">ADMIN</span></span>
+    </div>
+    <nav class="sidebar-menu">
+      <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="sach.html"><i class="bi bi-book"></i> Quan ly sach</a>
+      <a href="don-hang.html"><i class="bi bi-box-seam"></i> Don hang</a>
+      <a href="danh-muc.html"><i class="bi bi-grid"></i> Danh muc</a>
+      <a href="nguoi-dung.html" data-role="admin"><i class="bi bi-people"></i> Nguoi dung</a>
+      <a href="khuyen-mai.html" data-role="admin"><i class="bi bi-tag"></i> Khuyen mai</a>
+      <a href="blog.html" data-role="admin"><i class="bi bi-newspaper"></i> Blog</a>
+      <a href="lien-he.html"><i class="bi bi-chat-dots"></i> Lien he</a>
+      <a href="chat.html" class="active" data-role="staff"><i class="bi bi-headset"></i> Chat</a>
+      <a href="thong-bao.html" data-role="admin"><i class="bi bi-bell"></i> Thong bao</a>
+      <a href="tuyen-dung.html" data-role="admin"><i class="bi bi-briefcase"></i> Tuyen dung</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="/"><i class="bi bi-arrow-left-circle"></i> Ve Website</a>
+      <button class="btn-logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Dang xuat</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="topbar-title">
+        <h1>Chat Ho tro Khach hang</h1>
+        <p>Quan ly va tra loi tin nhan tu khach hang</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-icon"><i class="bi bi-arrow-clockwise" onclick="loadConversations()"></i></button>
+        <div class="topbar-avatar" id="avatarUser">A</div>
+      </div>
+    </header>
+
+    <div class="admin-content" style="padding: 16px; height: calc(100vh - 80px);">
+      <div class="chat-layout" id="chatLayout">
+        <!-- Danh sach conversations -->
+        <div class="chat-sidebar">
+          <div class="chat-sidebar-header">
+            <h3><i class="bi bi-chat-left-text me-2"></i>Cuoc hoi thoai</h3>
+            <div class="chat-search">
+              <i class="bi bi-search"></i>
+              <input type="text" placeholder="Tim kiem khach hang..." id="chatSearchInput">
+            </div>
+          </div>
+          <div class="chat-list" id="chatList">
+            <div style="text-align:center; padding:40px; color:#9CA3AF;">
+              <i class="bi bi-chat-dots" style="font-size:32px;display:block;margin-bottom:8px;"></i>
+              Dang tai...
+            </div>
+          </div>
+        </div>
+
+        <!-- Main chat area -->
+        <div class="chat-main" id="chatMain">
+          <div class="chat-no-select">
+            <i class="bi bi-chat-square-text"></i>
+            <h4 style="color:#6B7280;">Chon cuoc hoi thoai</h4>
+            <p>Chon mot cuoc hoi thoai tu danh sach ben trai de bat dau tra loi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toastContainer" class="toast-container-admin"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/admin/chat.js"></script>
+</body>
+</html>

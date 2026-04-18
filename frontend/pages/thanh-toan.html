@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh toán - Sách Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/checkout.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <!-- Main Content -->
+  <main class="checkout-page">
+    <div class="container">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb-custom">
+        <a href="/">Trang chủ</a>
+        <span class="separator"><i class="bi bi-chevron-right"></i></span>
+        <a href="/pages/gio-hang.html">Giỏ hàng</a>
+        <span class="separator"><i class="bi bi-chevron-right"></i></span>
+        <span class="current">Thanh toán</span>
+      </div>
+
+      <div class="row g-4">
+        <!-- Left Column - Shipping Form -->
+        <div class="col-lg-7">
+          <!-- Shipping Info -->
+          <div class="checkout-form-card">
+            <div class="checkout-section-title">
+              <i class="bi bi-truck"></i> Thông tin giao hàng
+            </div>
+
+            <!-- Chọn địa chỉ đã lưu -->
+            <div class="saved-address-section" id="savedAddressSection" style="display:none; margin-bottom:20px;">
+              <label style="font-size:14px; font-weight:600; margin-bottom:8px; display:block;">Chọn địa chỉ đã lưu</label>
+              <div class="saved-address-list" id="savedAddressList"></div>
+              <button type="button" class="btn-outline-custom" style="margin-top:10px; font-size:13px; padding:8px 16px;" onclick="useNewAddress()">
+                <i class="bi bi-plus-lg me-1"></i> Nhập địa chỉ mới
+              </button>
+            </div>
+
+            <form class="checkout-form" id="checkoutForm">
+              <div class="form-group">
+                <label>Họ và tên <span class="required">*</span></label>
+                <input type="text" id="fullName" placeholder="Nhập họ và tên người nhận" required>
+              </div>
+              <div class="form-group">
+                <label>Số điện thoại <span class="required">*</span></label>
+                <input type="tel" id="phone" placeholder="Nhập số điện thoại" required>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Tỉnh/Thành phố <span class="required">*</span></label>
+                    <select class="form-select" id="province" required>
+                      <option value="">Chọn tỉnh/thành phố</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Quận/Huyện <span class="required">*</span></label>
+                    <select class="form-select" id="district" required disabled>
+                      <option value="">Chọn quận/huyện</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Phường/Xã <span class="required">*</span></label>
+                    <select class="form-select" id="ward" required disabled>
+                      <option value="">Chọn phường/xã</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Địa chỉ cụ thể <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="addressDetail" required placeholder="Số nhà, tên đường...">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Ghi chú đơn hàng</label>
+                <textarea id="note" rows="2" placeholder="Ghi chú cho đơn hàng (tùy chọn)"></textarea>
+              </div>
+            </form>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="checkout-form-card">
+            <div class="checkout-section-title">
+              <i class="bi bi-credit-card"></i> Phương thức thanh toán
+            </div>
+            <div class="payment-methods">
+              <label class="payment-option selected" id="optionCOD">
+                <input type="radio" name="paymentMethod" value="COD" checked onchange="selectPayment(this)">
+                <div class="payment-option-icon cod">
+                  <i class="bi bi-cash-stack"></i>
+                </div>
+                <div class="payment-option-info">
+                  <div class="name">Thanh toán khi nhận hàng (COD)</div>
+                  <div class="desc">Thanh toán bằng tiền mặt khi nhận được hàng</div>
+                </div>
+              </label>
+              <label class="payment-option" id="optionVNPAY">
+                <input type="radio" name="paymentMethod" value="VNPAY" onchange="selectPayment(this)">
+                <div class="payment-option-icon vnpay">
+                  <i class="bi bi-bank"></i>
+                </div>
+                <div class="payment-option-info">
+                  <div class="name">Thanh toán online (VNPay)</div>
+                  <div class="desc">Thanh toán qua cổng VNPay - ATM/Visa/MasterCard/QR</div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Order Summary -->
+        <div class="col-lg-5">
+          <div class="order-summary-card">
+            <h3 class="order-summary-title">Đơn hàng của bạn</h3>
+
+            <div class="order-items" id="orderItems">
+              <div class="text-center py-3">
+                <div class="spinner-custom mx-auto"></div>
+              </div>
+            </div>
+
+            <hr class="checkout-divider">
+
+            <div class="checkout-summary-row">
+              <span class="label">Tạm tính</span>
+              <span class="value" id="checkoutSubtotal">0đ</span>
+            </div>
+            <div class="checkout-summary-row">
+              <span class="label">Phí vận chuyển</span>
+              <span class="value" id="checkoutShipping">30,000đ</span>
+            </div>
+            <div class="checkout-summary-row discount" id="checkoutDiscountRow" style="display:none;">
+              <span class="label">Giảm giá</span>
+              <span class="value" id="checkoutDiscount">-0đ</span>
+            </div>
+
+            <hr class="checkout-divider">
+
+            <div class="checkout-total">
+              <span class="label">Tổng cộng</span>
+              <span class="value" id="checkoutTotal">0đ</span>
+            </div>
+
+            <button class="btn-place-order" id="btnPlaceOrder" onclick="placeOrder()">
+              <i class="bi bi-shield-check"></i> ĐẶT HÀNG
+            </button>
+
+            <div class="order-agreement">
+              Bằng việc đặt hàng, bạn đồng ý với <a href="#">Điều khoản dịch vụ</a> và <a href="#">Chính sách bảo mật</a> của Sách Hub.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/checkout.js"></script>
+</body>
+</html>

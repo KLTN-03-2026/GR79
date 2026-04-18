@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Sách - Admin Sách Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <i class="bi bi-book-half"></i>
+      <span>Sach Hub <span class="badge-admin">ADMIN</span></span>
+    </div>
+    <nav class="sidebar-menu">
+      <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="sach.html" class="active"><i class="bi bi-book"></i> Quản lý sách</a>
+      <a href="don-hang.html"><i class="bi bi-box-seam"></i> Đơn hàng</a>
+      <a href="danh-muc.html"><i class="bi bi-grid"></i> Danh mục</a>
+      <a href="nguoi-dung.html" data-role="admin"><i class="bi bi-people"></i> Người dùng</a>
+      <a href="khuyen-mai.html" data-role="admin"><i class="bi bi-tag"></i> Khuyến mãi</a>
+      <a href="blog.html" data-role="admin"><i class="bi bi-newspaper"></i> Blog</a>
+      <a href="lien-he.html"><i class="bi bi-chat-dots"></i> Liên hệ</a>
+      <a href="chat.html" data-role="staff"><i class="bi bi-headset"></i> Chat</a>
+      <a href="thong-bao.html" data-role="admin"><i class="bi bi-bell"></i> Thông báo</a>
+      <a href="tuyen-dung.html" data-role="admin"><i class="bi bi-briefcase"></i> Tuyển dụng</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="/"><i class="bi bi-arrow-left-circle"></i> Về Website</a>
+      <button class="btn-logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="topbar-title">
+        <h1>Quản lý Sách</h1>
+        <p>Quản lý kho sách của bạn</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-primary-admin" data-bs-toggle="modal" data-bs-target="#bookModal" onclick="openAddModal()">
+          <i class="bi bi-plus-lg"></i> Thêm sách mới
+        </button>
+        <button class="btn-icon"><i class="bi bi-search"></i></button>
+        <button class="btn-icon">
+          <i class="bi bi-bell"></i>
+          <span class="badge-dot"></span>
+        </button>
+        <div class="topbar-avatar" id="avatarUser">A</div>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div class="admin-card">
+        <!-- Filter -->
+        <div class="filter-bar">
+          <div class="flex-grow-1" style="max-width: 300px;">
+            <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm sách...">
+          </div>
+          <select class="form-select" id="filterCategory" style="width: 180px;">
+            <option value="">Tất cả danh mục</option>
+          </select>
+          <select class="form-select" id="filterStatus" style="width: 160px;">
+            <option value="">Tất cả trạng thái</option>
+            <option value="in-stock">Còn hàng</option>
+            <option value="out-of-stock">Hết hàng</option>
+          </select>
+          <button class="btn-primary-admin" onclick="loadBooks()"><i class="bi bi-funnel"></i> Lọc</button>
+        </div>
+
+        <!-- Table -->
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Ảnh</th>
+                <th>Tên sách</th>
+                <th>Tác giả</th>
+                <th>Danh mục</th>
+                <th>Giá</th>
+                <th>Tồn kho</th>
+                <th>Đã bán</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="booksTable">
+              <tr><td colspan="10" class="text-center py-4">Đang tải...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="admin-pagination">
+          <div class="page-info" id="pageInfo">Hiển thị 0 kết quả</div>
+          <nav>
+            <ul class="pagination" id="pagination"></ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Book Modal -->
+  <div class="modal fade" id="bookModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookModalTitle">Thêm sách mới</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="bookForm">
+            <input type="hidden" id="bookId">
+            <div class="form-group">
+              <label>Tên sách <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="bookName" required>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Tác giả <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="bookAuthor" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Nhà xuất bản</label>
+                  <input type="text" class="form-control" id="bookPublisher">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Danh mục <span class="text-danger">*</span></label>
+              <select class="form-select" id="bookCategory" required>
+                <option value="">Chọn danh mục</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Mô tả</label>
+              <textarea class="form-control" id="bookDescription" rows="4" placeholder="Mô tả sách..."></textarea>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Giá bán <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" id="bookPrice" required min="0">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Giá gốc</label>
+                  <input type="number" class="form-control" id="bookOriginalPrice" min="0">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Giảm giá (%)</label>
+                  <input type="number" class="form-control" id="bookDiscount" min="0" max="100" value="0">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Tồn kho <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" id="bookStock" required min="0">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Hình ảnh</label>
+              <div class="upload-area" id="uploadArea" onclick="document.getElementById('bookImages').click()">
+                <i class="bi bi-cloud-arrow-up"></i>
+                <p>Click để chọn ảnh hoặc kéo thả vào đây</p>
+              </div>
+              <input type="file" id="bookImages" multiple accept="image/*" style="display: none;" onchange="previewImages(event)">
+              <div class="upload-preview" id="imagePreview"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Số trang</label>
+                  <input type="number" class="form-control" id="bookPages" min="1">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Năm xuất bản</label>
+                  <input type="number" class="form-control" id="bookYear" min="1900" max="2030">
+                </div>
+              </div>
+            </div>
+            <div class="d-flex gap-4">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="bookFeatured">
+                <label class="form-check-label" for="bookFeatured">Sách nổi bật</label>
+              </div>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="bookFlashSale">
+                <label class="form-check-label" for="bookFlashSale">Flash Sale</label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn-primary-admin" onclick="saveBook()"><i class="bi bi-check-lg"></i> Lưu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toastContainer" class="toast-container-admin"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/admin/books.js"></script>
+</body>
+</html>
