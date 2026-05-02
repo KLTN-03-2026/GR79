@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Thông báo - Admin Sách Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <i class="bi bi-book-half"></i>
+      <span>Sach Hub <span class="badge-admin">ADMIN</span></span>
+    </div>
+    <nav class="sidebar-menu">
+      <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="sach.html"><i class="bi bi-book"></i> Quản lý sách</a>
+      <a href="don-hang.html"><i class="bi bi-box-seam"></i> Đơn hàng</a>
+      <a href="danh-muc.html"><i class="bi bi-grid"></i> Danh mục</a>
+      <a href="nguoi-dung.html" data-role="admin"><i class="bi bi-people"></i> Người dùng</a>
+      <a href="khuyen-mai.html" data-role="admin"><i class="bi bi-tag"></i> Khuyến mãi</a>
+      <a href="blog.html" data-role="admin"><i class="bi bi-newspaper"></i> Blog</a>
+      <a href="lien-he.html"><i class="bi bi-chat-dots"></i> Liên hệ</a>
+      <a href="chat.html" data-role="staff"><i class="bi bi-headset"></i> Chat</a>
+      <a href="thong-bao.html" class="active" data-role="admin"><i class="bi bi-bell"></i> Thông báo</a>
+      <a href="tuyen-dung.html" data-role="admin"><i class="bi bi-briefcase"></i> Tuyển dụng</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="/"><i class="bi bi-arrow-left-circle"></i> Về Website</a>
+      <button class="btn-logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="topbar-title">
+        <h1>Quản lý Thông báo</h1>
+        <p>Tạo và quản lý thông báo gửi đến khách hàng</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNotifModal">
+          <i class="bi bi-plus-circle me-1"></i> Tạo thông báo mới
+        </button>
+        <div class="topbar-avatar" id="avatarUser">A</div>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div class="admin-card">
+        <!-- Table -->
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Tiêu đề</th>
+                <th>Loại</th>
+                <th>Đối tượng</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="notifTable">
+              <tr><td colspan="7" class="text-center py-4">Đang tải...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="admin-pagination">
+          <div class="page-info" id="pageInfo">Hiển thị 0 kết quả</div>
+          <nav>
+            <ul class="pagination" id="pagination"></ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Create Notification Modal -->
+  <div class="modal fade" id="createNotifModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Tạo thông báo mới</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="createNotifForm" onsubmit="submitNotification(event)">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Tiêu đề <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="notifTitle" required maxlength="200" placeholder="Nhập tiêu đề thông báo">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="notifContent" rows="5" required placeholder="Nhập nội dung chi tiết"></textarea>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Loại thông báo</label>
+                <select class="form-select" id="notifType">
+                  <option value="general">Chung</option>
+                  <option value="order">Đơn hàng</option>
+                  <option value="promotion">Khuyến mãi</option>
+                  <option value="system">Hệ thống</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Liên kết (tùy chọn)</label>
+                <input type="text" class="form-control" id="notifLink" placeholder="VD: /pages/danh-sach-sach.html">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="notifGlobal" checked onchange="toggleUserSelect()">
+                <label class="form-check-label" for="notifGlobal">
+                  <strong>Gửi đến toàn hệ thống</strong> (tất cả người dùng)
+                </label>
+              </div>
+            </div>
+
+            <div class="mb-3" id="userSelectWrapper" style="display:none;">
+              <label class="form-label">Chọn người dùng <span class="text-danger">*</span></label>
+              <select class="form-select" id="notifUser">
+                <option value="">-- Đang tải --</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-send me-1"></i>Gửi thông báo
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toastContainer" class="toast-container-admin"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/admin/notifications.js"></script>
+</body>
+</html>

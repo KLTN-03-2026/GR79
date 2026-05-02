@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Liên hệ - Admin Sách Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <i class="bi bi-book-half"></i>
+      <span>Sach Hub <span class="badge-admin">ADMIN</span></span>
+    </div>
+    <nav class="sidebar-menu">
+      <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="sach.html"><i class="bi bi-book"></i> Quản lý sách</a>
+      <a href="don-hang.html"><i class="bi bi-box-seam"></i> Đơn hàng</a>
+      <a href="danh-muc.html"><i class="bi bi-grid"></i> Danh mục</a>
+      <a href="nguoi-dung.html" data-role="admin"><i class="bi bi-people"></i> Người dùng</a>
+      <a href="khuyen-mai.html" data-role="admin"><i class="bi bi-tag"></i> Khuyến mãi</a>
+      <a href="blog.html" data-role="admin"><i class="bi bi-newspaper"></i> Blog</a>
+      <a href="lien-he.html" class="active"><i class="bi bi-chat-dots"></i> Liên hệ</a>
+      <a href="chat.html" data-role="staff"><i class="bi bi-headset"></i> Chat</a>
+      <a href="thong-bao.html" data-role="admin"><i class="bi bi-bell"></i> Thông báo</a>
+      <a href="tuyen-dung.html" data-role="admin"><i class="bi bi-briefcase"></i> Tuyển dụng</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="/"><i class="bi bi-arrow-left-circle"></i> Về Website</a>
+      <button class="btn-logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="topbar-title">
+        <h1>Quản lý Liên hệ</h1>
+        <p>Quản lý các tin nhắn liên hệ từ khách hàng</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-icon"><i class="bi bi-search"></i></button>
+        <button class="btn-icon">
+          <i class="bi bi-bell"></i>
+          <span class="badge-dot"></span>
+        </button>
+        <div class="topbar-avatar" id="avatarUser">A</div>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div class="admin-card">
+        <!-- Tab filters -->
+        <div class="tab-filters">
+          <button class="tab-btn active" data-status="" onclick="filterByStatus(this)">
+            Tất cả
+          </button>
+          <button class="tab-btn" data-status="new" onclick="filterByStatus(this)">
+            Mới <span class="count" id="newCount">0</span>
+          </button>
+          <button class="tab-btn" data-status="read" onclick="filterByStatus(this)">
+            Đã đọc
+          </button>
+          <button class="tab-btn" data-status="replied" onclick="filterByStatus(this)">
+            Đã trả lời
+          </button>
+        </div>
+
+        <!-- Table -->
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Chủ đề</th>
+                <th>Trạng thái</th>
+                <th>Ngày gửi</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="contactsTable">
+              <tr><td colspan="7" class="text-center py-4">Đang tải...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="admin-pagination">
+          <nav>
+            <ul class="pagination" id="pagination"></ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Xem chi tiết -->
+  <div class="modal fade" id="contactDetailModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Chi tiết liên hệ</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-muted small">Họ tên</label>
+            <p class="mb-0 fw-semibold" id="detailName"></p>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-muted small">Email</label>
+            <p class="mb-0" id="detailEmail"></p>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-muted small">Số điện thoại</label>
+            <p class="mb-0" id="detailPhone"></p>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-muted small">Chủ đề</label>
+            <p class="mb-0 fw-semibold" id="detailSubject"></p>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-muted small">Nội dung</label>
+            <div class="bg-light p-3 rounded" id="detailMessage" style="white-space:pre-wrap;"></div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-muted small">Ngày gửi</label>
+            <p class="mb-0" id="detailDate"></p>
+          </div>
+          <div>
+            <label class="form-label fw-semibold text-muted small">Trạng thái</label>
+            <p class="mb-0" id="detailStatus"></p>
+          </div>
+        </div>
+        <div class="modal-footer" id="detailActions">
+          <!-- Dynamic buttons -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toastContainer" class="toast-container-admin"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/admin/contacts.js"></script>
+</body>
+</html>

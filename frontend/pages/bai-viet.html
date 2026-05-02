@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi tiết bài viết - Sách Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-custom">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+          <li class="breadcrumb-item"><a href="/pages/tin-tuc.html">Tin tức</a></li>
+          <li class="breadcrumb-item active" id="breadcrumbTitle">Đang tải...</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <article id="blogDetail">
+            <div class="text-center py-5">
+              <div class="spinner-border text-secondary" role="status"></div>
+              <p class="mt-2 text-muted">Đang tải bài viết...</p>
+            </div>
+          </article>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+          <div class="sidebar-box">
+            <h4>Tìm kiếm</h4>
+            <div class="sidebar-search">
+              <input type="text" id="blogSearchInput" placeholder="Tìm kiếm bài viết...">
+              <button id="blogSearchBtn"><i class="bi bi-search"></i></button>
+            </div>
+          </div>
+
+          <div class="sidebar-box">
+            <h4>Xem nhiều nhất</h4>
+            <ul id="popularList" class="popular-list">
+              <li><span class="pop-num">-</span><div class="pop-info"><h5>Đang tải...</h5><span></span></div></li>
+            </ul>
+          </div>
+
+          <div class="sidebar-box">
+            <h4>Từ khóa phổ biến</h4>
+            <div class="tag-cloud">
+              <a href="#">Sách hay</a>
+              <a href="#">Văn học</a>
+              <a href="#">Self-help</a>
+              <a href="#">Kinh tế</a>
+              <a href="#">Thiếu nhi</a>
+              <a href="#">Tác giả Việt</a>
+              <a href="#">Manga</a>
+              <a href="#">Light Novel</a>
+            </div>
+          </div>
+
+          <div class="sidebar-box newsletter-box">
+            <h4>Bản tin Sách Hub</h4>
+            <p style="font-size:.88rem;color:var(--text-gray);margin-bottom:14px;">Đăng ký nhận tin tức mới nhất về sách và ưu đãi hấp dẫn.</p>
+            <input type="email" id="newsletterEmail" placeholder="Email của bạn...">
+            <button id="newsletterBtn">Đăng ký nhận tin</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/blog-detail.js"></script>
+</body>
+</html>

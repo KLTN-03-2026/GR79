@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi tiết tuyển dụng - Sách Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/recruitment.css">
+  <style>
+    .job-detail-hero {
+      background: linear-gradient(135deg, #1a5f7a 0%, #134e6f 100%);
+      color: #fff;
+      padding: 50px 0 40px;
+    }
+    .job-detail-hero h1 { font-weight: 700; margin-bottom: 12px; }
+    .job-meta-bar { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; }
+    .job-meta-bar .meta-item { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; }
+    .job-meta-bar .meta-item i { font-size: 18px; }
+    .job-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 30px 0;
+      padding: 24px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border: 1px solid #e6e9ec;
+    }
+    .info-block { display: flex; align-items: center; gap: 12px; }
+    .info-block .ib-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: #e8f1f5; color: #1a5f7a;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .info-block .ib-label { font-size: 13px; color: #6c757d; }
+    .info-block .ib-value { font-size: 15px; font-weight: 600; color: #212529; }
+    .job-section { margin-bottom: 32px; }
+    .job-section h3 {
+      font-size: 20px; font-weight: 700; margin-bottom: 14px;
+      padding-bottom: 8px; border-bottom: 2px solid #1a5f7a;
+      display: inline-block;
+    }
+    .job-section .content-text {
+      white-space: pre-wrap;
+      line-height: 1.75;
+      color: #495057;
+    }
+    .btn-apply-large {
+      background: #1a5f7a; color: #fff; border: none;
+      padding: 14px 36px; border-radius: 8px;
+      font-weight: 600; font-size: 16px;
+      transition: all .2s;
+    }
+    .btn-apply-large:hover { background: #134e6f; color: #fff; transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <div class="breadcrumb-custom">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+          <li class="breadcrumb-item"><a href="/pages/tuyen-dung.html">Tuyển dụng</a></li>
+          <li class="breadcrumb-item active" id="breadcrumbTitle">Đang tải...</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div id="jobDetail">
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-3 text-muted">Đang tải thông tin tuyển dụng...</p>
+    </div>
+  </div>
+
+  <!-- Modal Ứng tuyển -->
+  <div class="modal fade" id="applyModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ứng tuyển vị trí</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Vui lòng gửi CV và thư xin việc của bạn về địa chỉ email tuyển dụng:</p>
+          <div class="alert alert-info">
+            <i class="bi bi-envelope me-2"></i>
+            <strong>tuyendung@sachhub.vn</strong>
+          </div>
+          <p class="mb-0">Tiêu đề email vui lòng ghi rõ: <strong id="applyJobTitle"></strong></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <a id="mailtoLink" href="#" class="btn-apply-large" style="text-decoration:none;">
+            <i class="bi bi-envelope"></i> Mở Email
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <div id="toastContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/utils.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+
+    function escapeHtml(str) {
+      if (str == null) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+
+    function formatDateVi(date) {
+      if (!date) return 'Không giới hạn';
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return 'Không giới hạn';
+      return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    async function loadJobDetail() {
+      if (!slug) {
+        document.getElementById('jobDetail').innerHTML = '<div class="container py-5 text-center"><h3>Không tìm thấy tin tuyển dụng</h3><a href="/pages/tuyen-dung.html" class="btn btn-primary mt-3">Quay lại</a></div>';
+        return;
+      }
+      try {
+        const res = await apiCall('/jobs/' + encodeURIComponent(slug));
+        const job = res.job;
+        renderJob(job);
+      } catch (err) {
+        document.getElementById('jobDetail').innerHTML = `<div class="container py-5 text-center"><h3>Lỗi</h3><p class="text-muted">${escapeHtml(err.message)}</p><a href="/pages/tuyen-dung.html" class="btn btn-primary mt-3">Quay lại</a></div>`;
+      }
+    }
+
+    function renderJob(job) {
+      document.title = job.title + ' - Tuyển dụng Sách Hub';
+      document.getElementById('breadcrumbTitle').textContent = job.title;
+
+      const html = `
+        <section class="job-detail-hero">
+          <div class="container">
+            <div class="badge bg-light text-dark mb-2">${escapeHtml(job.department)}</div>
+            <h1>${escapeHtml(job.title)}</h1>
+            <div class="job-meta-bar">
+              <span class="meta-item"><i class="bi bi-geo-alt"></i> ${escapeHtml(job.location || 'TP. Hồ Chí Minh')}</span>
+              <span class="meta-item"><i class="bi bi-briefcase"></i> ${escapeHtml(job.jobType)}</span>
+              <span class="meta-item"><i class="bi bi-cash-stack"></i> ${escapeHtml(job.salary || 'Thỏa thuận')}</span>
+              <span class="meta-item"><i class="bi bi-calendar-event"></i> Hạn: ${formatDateVi(job.deadline)}</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="container py-5">
+          <div class="row">
+            <div class="col-lg-9">
+              <div class="job-info-grid">
+                <div class="info-block">
+                  <div class="ib-icon"><i class="bi bi-building"></i></div>
+                  <div>
+                    <div class="ib-label">Phòng ban</div>
+                    <div class="ib-value">${escapeHtml(job.department)}</div>
+                  </div>
+                </div>
+                <div class="info-block">
+                  <div class="ib-icon"><i class="bi bi-clock"></i></div>
+                  <div>
+                    <div class="ib-label">Kinh nghiệm</div>
+                    <div class="ib-value">${escapeHtml(job.experience || 'Không yêu cầu')}</div>
+                  </div>
+                </div>
+                <div class="info-block">
+                  <div class="ib-icon"><i class="bi bi-people"></i></div>
+                  <div>
+                    <div class="ib-label">Số lượng</div>
+                    <div class="ib-value">${job.quantity || 1} người</div>
+                  </div>
+                </div>
+                <div class="info-block">
+                  <div class="ib-icon"><i class="bi bi-cash-stack"></i></div>
+                  <div>
+                    <div class="ib-label">Mức lương</div>
+                    <div class="ib-value">${escapeHtml(job.salary || 'Thỏa thuận')}</div>
+                  </div>
+                </div>
+              </div>
+
+              ${job.description ? `
+              <div class="job-section">
+                <h3>Mô tả công việc</h3>
+                <div class="content-text">${escapeHtml(job.description)}</div>
+              </div>` : ''}
+
+              ${job.requirements ? `
+              <div class="job-section">
+                <h3>Yêu cầu ứng viên</h3>
+                <div class="content-text">${escapeHtml(job.requirements)}</div>
+              </div>` : ''}
+
+              ${job.benefits ? `
+              <div class="job-section">
+                <h3>Quyền lợi</h3>
+                <div class="content-text">${escapeHtml(job.benefits)}</div>
+              </div>` : ''}
+
+              <div class="text-center py-4">
+                <button class="btn-apply-large" onclick="openApply('${escapeHtml(job.title)}')">
+                  <i class="bi bi-send"></i> Ứng tuyển ngay
+                </button>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                  <h5 class="fw-bold">Thông tin liên hệ</h5>
+                  <p class="text-muted small mb-2">Email tuyển dụng:</p>
+                  <p><a href="mailto:tuyendung@sachhub.vn">tuyendung@sachhub.vn</a></p>
+                  <hr>
+                  <p class="text-muted small mb-2">Ngày đăng:</p>
+                  <p>${formatDateVi(job.createdAt)}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+      document.getElementById('jobDetail').innerHTML = html;
+    }
+
+    function openApply(title) {
+      document.getElementById('applyJobTitle').textContent = '[Ứng tuyển] ' + title;
+      document.getElementById('mailtoLink').href = 'mailto:tuyendung@sachhub.vn?subject=' + encodeURIComponent('[Ứng tuyển] ' + title);
+      new bootstrap.Modal(document.getElementById('applyModal')).show();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof updateHeaderAuth === 'function') updateHeaderAuth();
+      loadJobDetail();
+    });
+  </script>
+</body>
+</html>
