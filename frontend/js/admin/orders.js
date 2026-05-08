@@ -20,6 +20,8 @@
 
 let currentPage = 1;
 let currentStatus = '';
+let currentSearch = '';
+let searchTimer = null;
 const limit = 10;
 
 const STATUS_MAP = {
@@ -43,6 +45,7 @@ async function loadOrders(page = 1) {
   currentPage = page;
   let query = `/orders?page=${page}&limit=${limit}`;
   if (currentStatus) query += `&status=${currentStatus}`;
+  if (currentSearch) query += `&search=${encodeURIComponent(currentSearch)}`;
 
   const tbody = document.getElementById('ordersTable');
   tbody.innerHTML = '<tr><td colspan="7"><div class="admin-spinner"></div></td></tr>';
@@ -305,6 +308,37 @@ async function updateStatusFromModal(orderId, newStatus) {
   } catch (error) {
     showToast(error.message || 'Lỗi cập nhật trạng thái!', 'error');
   }
+}
+
+// ====== SEARCH ======
+const searchInput = document.getElementById('orderSearchInput');
+const searchClear = document.getElementById('orderSearchClear');
+if (searchInput) {
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    const val = searchInput.value.trim();
+    searchClear.style.display = val ? 'block' : 'none';
+    searchTimer = setTimeout(() => {
+      currentSearch = val;
+      loadOrders(1);
+    }, 350);
+  });
+  searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      clearTimeout(searchTimer);
+      currentSearch = searchInput.value.trim();
+      loadOrders(1);
+    }
+  });
+}
+if (searchClear) {
+  searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    searchClear.style.display = 'none';
+    currentSearch = '';
+    loadOrders(1);
+    searchInput.focus();
+  });
 }
 
 // ====== INIT ======

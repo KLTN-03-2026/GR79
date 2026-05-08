@@ -1,0 +1,82 @@
+[
+  {
+    "_id": "69d494e2210371a33f8063ee",
+    "title": "Xu hướng AudioBook: Tương lai của ngành xuất bản Việt Nam",
+    "content": "<p>AudioBook đang trở thành xu hướng mới trong ngành xuất bản, thay đổi hoàn toàn cách chúng ta tiếp cận sách. Tại Việt Nam, thị trường AudioBook tăng trưởng 40% mỗi năm.</p>",
+    "excerpt": "AudioBook đang trở thành xu hướng mới, thay đổi cách chúng ta tiếp cận sách.",
+    "image": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800",
+    "category": "Tin Tức Xuất Bản",
+    "tags": [
+      "audiobook",
+      "xu hướng",
+      "xuất bản"
+    ],
+    "author": "69d494e1210371a33f8063c3",
+    "views": 651,
+    "isPublished": true,
+    "createdAt": "2026-04-07T05:23:46.351Z",
+    "updatedAt": "2026-04-09T10:37:30.222Z",
+    "slug": "xu-huong-audiobook:-tuong-lai-cua-nganh-xuat-ban-viet-nam-1775539426351",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063ed",
+    "title": "Phong cách đọc sách hiệu quả của người Nhật",
+    "content": "<p>Người Nhật nổi tiếng với văn hóa đọc sách. Trung bình mỗi người Nhật đọc 12-13 cuốn sách mỗi năm. Vậy bí quyết của họ là gì?</p><h3>Phương pháp đọc 3-2-1</h3><p>Đọc 3 chương, ghi chú 2 điểm quan trọng, áp dụng 1 bài học ngay lập tức...</p>",
+    "excerpt": "Khám phá phương pháp đọc sách độc đáo giúp người Nhật tiếp thu kiến thức nhanh hơn.",
+    "image": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800",
+    "category": "Kinh Nghiệm Đọc",
+    "tags": [
+      "đọc sách",
+      "Nhật Bản",
+      "phương pháp"
+    ],
+    "author": "69d494e1210371a33f8063c3",
+    "views": 892,
+    "isPublished": true,
+    "createdAt": "2026-04-07T05:23:46.351Z",
+    "updatedAt": "2026-04-09T10:36:48.017Z",
+    "slug": "phong-cach-doc-sach-hieu-qua-cua-nguoi-nhat-1775539426351",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063ec",
+    "title": "Top 10 cuốn sách kinh điển về quản trị kinh doanh bạn không thể bỏ qua",
+    "content": "<p>Trong thế giới kinh doanh đầy cạnh tranh, việc liên tục học hỏi là điều không thể thiếu. Dưới đây là 10 cuốn sách kinh điển mà mọi nhà quản trị nên đọc ít nhất một lần trong đời.</p><h3>1. Đắc Nhân Tâm - Dale Carnegie</h3><p>Cuốn sách này không chỉ về kinh doanh mà còn về nghệ thuật giao tiếp và xây dựng mối quan hệ...</p><h3>2. Từ Tốt Đến Vĩ Đại - Jim Collins</h3><p>Jim Collins nghiên cứu hàng trăm công ty để tìm ra công thức biến doanh nghiệp tốt thành vĩ đại...</p>",
+    "excerpt": "Những cuốn sách kinh doanh hay nhất mọi thời đại mà bạn không thể bỏ qua trong năm 2026.",
+    "image": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800",
+    "category": "Review Sách",
+    "tags": [
+      "kinh doanh",
+      "quản trị",
+      "sách hay"
+    ],
+    "author": "69d494e1210371a33f8063c3",
+    "views": 1250,
+    "isPublished": true,
+    "createdAt": "2026-04-07T05:23:46.351Z",
+    "updatedAt": "2026-04-07T05:23:46.351Z",
+    "slug": "top-10-cuon-sach-kinh-dien-ve-quan-tri-kinh-doanh-ban-khong-the-bo-qua-1775539426351",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063ef",
+    "title": "Hội sách quốc tế TP.HCM 2026: Quy mô lớn nhất từ trước đến nay",
+    "content": "<p>Hội sách quốc tế TP.HCM 2026 quy tụ hơn 500 gian hàng từ 200 nhà xuất bản trong và ngoài nước, với hơn 300.000 đầu sách.</p>",
+    "excerpt": "Sự kiện sách lớn nhất năm với hàng nghìn ưu đãi hấp dẫn.",
+    "image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800",
+    "category": "Sự Kiện",
+    "tags": [
+      "hội sách",
+      "sự kiện",
+      "TP.HCM"
+    ],
+    "author": "69d494e1210371a33f8063c3",
+    "views": 2100,
+    "isPublished": true,
+    "createdAt": "2026-04-07T05:23:46.351Z",
+    "updatedAt": "2026-04-07T05:23:46.351Z",
+    "slug": "hoi-sach-quoc-te-tp.hcm-2026:-quy-mo-lon-nhat-tu-truoc-den-nay-1775539426351",
+    "__v": 0
+  }
+]

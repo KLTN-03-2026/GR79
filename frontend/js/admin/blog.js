@@ -1,6 +1,5 @@
 // Quản lý Blog - Sách Hub Admin
 let blogs = [];
-let editingBlogId = null;
 let currentPage = 1;
 let totalPages = 1;
 const limit = 10;
@@ -18,9 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const adminNameEl = document.getElementById('adminName');
   if (adminNameEl) adminNameEl.textContent = user.fullName || user.name || 'Admin';
   loadBlogs();
-
-  document.getElementById('blogForm').addEventListener('submit', handleBlogSubmit);
-  document.getElementById('blogImage').addEventListener('change', previewBlogImage);
 });
 
 async function loadBlogs(page = 1) {
@@ -95,99 +91,15 @@ function renderBlogsTable() {
         </span>
       </td>
       <td>
-        <button class="btn btn-sm btn-outline-primary me-1" onclick="openEditBlog('${id}')" title="Sửa">
+        <a href="blog-form.html?id=${id}" class="btn btn-sm btn-outline-primary me-1" title="Sửa">
           <i class="bi bi-pencil"></i>
-        </button>
+        </a>
         <button class="btn btn-sm btn-outline-danger" onclick="deleteBlog('${id}')" title="Xóa">
           <i class="bi bi-trash"></i>
         </button>
       </td>
     </tr>`;
   }).join('');
-}
-
-function openAddBlog() {
-  editingBlogId = null;
-  document.getElementById('blogModalTitle').textContent = 'Viết bài mới';
-  document.getElementById('blogForm').reset();
-  document.getElementById('blogId').value = '';
-  document.getElementById('blogPublished').checked = true;
-  document.getElementById('blogImagePreview').innerHTML = '';
-}
-
-function openEditBlog(id) {
-  const blog = blogs.find(b => (b._id || b.id) === id);
-  if (!blog) return;
-  editingBlogId = id;
-  document.getElementById('blogModalTitle').textContent = 'Sửa bài viết';
-  document.getElementById('blogId').value = id;
-  document.getElementById('blogTitle').value = blog.title;
-  document.getElementById('blogCategory').value = blog.category || 'Review Sách';
-  document.getElementById('blogExcerpt').value = blog.excerpt || '';
-  document.getElementById('blogContent').value = blog.content || '';
-  document.getElementById('blogTags').value = (blog.tags || []).join(', ');
-  document.getElementById('blogPublished').checked = blog.isPublished !== false && blog.published !== false && blog.status !== 'draft';
-  document.getElementById('blogImagePreview').innerHTML = blog.image
-    ? `<img src="${blog.image}" class="rounded" width="120" height="80" style="object-fit:cover;">`
-    : '';
-  const modal = new bootstrap.Modal(document.getElementById('blogModal'));
-  modal.show();
-}
-
-function previewBlogImage(e) {
-  const file = e.target.files[0];
-  const preview = document.getElementById('blogImagePreview');
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      preview.innerHTML = `<img src="${ev.target.result}" class="rounded" width="120" height="80" style="object-fit:cover;">`;
-    };
-    reader.readAsDataURL(file);
-  } else {
-    preview.innerHTML = '';
-  }
-}
-
-async function handleBlogSubmit(e) {
-  e.preventDefault();
-  const btn = document.getElementById('btnSaveBlog');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Đang lưu...';
-
-  try {
-    const formData = new FormData();
-    formData.append('title', document.getElementById('blogTitle').value.trim());
-    formData.append('category', document.getElementById('blogCategory').value);
-    formData.append('excerpt', document.getElementById('blogExcerpt').value.trim());
-    formData.append('content', document.getElementById('blogContent').value.trim());
-    formData.append('isPublished', document.getElementById('blogPublished').checked);
-
-    const tagsVal = document.getElementById('blogTags').value.trim();
-    if (tagsVal) {
-      const tags = tagsVal.split(',').map(t => t.trim()).filter(Boolean);
-      formData.append('tags', JSON.stringify(tags));
-    }
-
-    const imageFile = document.getElementById('blogImage').files[0];
-    if (imageFile) formData.append('image', imageFile);
-
-    let endpoint = '/blogs';
-    let method = 'POST';
-    if (editingBlogId) {
-      endpoint = `/blogs/${editingBlogId}`;
-      method = 'PUT';
-    }
-
-    await apiCall(endpoint, { method, body: formData, isFormData: true });
-    showToast(editingBlogId ? 'Cập nhật bài viết thành công!' : 'Tạo bài viết thành công!', 'success');
-    bootstrap.Modal.getInstance(document.getElementById('blogModal')).hide();
-    loadBlogs(currentPage);
-  } catch (err) {
-    showToast('Lỗi: ' + err.message, 'danger');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="bi bi-check-lg me-1"></i> Lưu bài viết';
-  }
 }
 
 async function deleteBlog(id) {

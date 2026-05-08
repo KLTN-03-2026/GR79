@@ -1,0 +1,67 @@
+[
+  {
+    "_id": "69d494e2210371a33f8063ff",
+    "user": "69d494e2210371a33f8063c6",
+    "title": "Đơn hàng của bạn đã được xác nhận",
+    "content": "Đơn hàng #SH123456 của bạn đã được xác nhận và đang chuẩn bị giao. Cảm ơn bạn đã mua sắm tại Sách Hub!",
+    "type": "order",
+    "link": "/pages/don-hang.html",
+    "isRead": false,
+    "isGlobal": false,
+    "createdAt": "2026-04-07T05:23:46.356Z",
+    "updatedAt": "2026-04-07T05:23:46.356Z",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063fc",
+    "user": null,
+    "title": "Chào mừng đến với Sách Hub!",
+    "content": "Cảm ơn bạn đã trở thành thành viên của Sách Hub. Khám phá hàng ngàn đầu sách hay với ưu đãi hấp dẫn ngay hôm nay!",
+    "type": "general",
+    "link": "/",
+    "isRead": true,
+    "isGlobal": true,
+    "createdAt": "2026-04-07T05:23:46.356Z",
+    "updatedAt": "2026-04-09T10:48:11.483Z",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063fe",
+    "user": null,
+    "title": "Thông báo bảo trì hệ thống",
+    "content": "Hệ thống Sách Hub sẽ tạm ngưng phục vụ từ 23:00 ngày 10/04 đến 01:00 ngày 11/04 để nâng cấp. Mong quý khách thông cảm.",
+    "type": "system",
+    "link": "",
+    "isRead": true,
+    "isGlobal": true,
+    "createdAt": "2026-04-07T05:23:46.356Z",
+    "updatedAt": "2026-04-09T10:48:13.660Z",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063fd",
+    "user": null,
+    "title": "Khuyến mãi tháng 4: Giảm đến 50%",
+    "content": "Hàng ngàn đầu sách đang được giảm giá lên đến 50%. Sử dụng mã WELCOME20 để được giảm thêm 20% cho đơn hàng đầu tiên.",
+    "type": "promotion",
+    "link": "/pages/danh-sach-sach.html",
+    "isRead": true,
+    "isGlobal": true,
+    "createdAt": "2026-04-07T05:23:46.356Z",
+    "updatedAt": "2026-04-09T10:48:14.393Z",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f806400",
+    "user": "69d494e2210371a33f8063c6",
+    "title": "Bạn nhận được 100 điểm thưởng",
+    "content": "Bạn vừa nhận được 100 điểm thưởng từ đơn hàng gần nhất. Tích lũy điểm để đổi quà hấp dẫn nhé!",
+    "type": "general",
+    "link": "/pages/ho-so.html",
+    "isRead": false,
+    "isGlobal": false,
+    "createdAt": "2026-04-07T05:23:46.356Z",
+    "updatedAt": "2026-04-07T05:23:46.356Z",
+    "__v": 0
+  }
+]

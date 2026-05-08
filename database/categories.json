@@ -1,0 +1,68 @@
+[
+  {
+    "_id": "69d494e2210371a33f8063c8",
+    "name": "Văn học",
+    "description": "Tiểu thuyết, truyện ngắn, thơ ca trong và ngoài nước",
+    "image": "",
+    "isActive": true,
+    "createdAt": "2026-04-07T05:23:46.339Z",
+    "updatedAt": "2026-04-07T05:23:46.339Z",
+    "slug": "van-hoc",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063c9",
+    "name": "Kỹ năng sống",
+    "description": "Phát triển bản thân, kỹ năng giao tiếp, lãnh đạo",
+    "image": "",
+    "isActive": true,
+    "createdAt": "2026-04-07T05:23:46.339Z",
+    "updatedAt": "2026-04-07T05:23:46.339Z",
+    "slug": "ky-nang-song",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063cb",
+    "name": "Thiếu nhi",
+    "description": "Truyện tranh, sách giáo dục, truyện cổ tích",
+    "image": "",
+    "isActive": true,
+    "createdAt": "2026-04-07T05:23:46.339Z",
+    "updatedAt": "2026-04-07T05:23:46.339Z",
+    "slug": "thieu-nhi",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063ca",
+    "name": "Kinh tế",
+    "description": "Kinh doanh, tài chính, quản trị, marketing",
+    "image": "",
+    "isActive": true,
+    "createdAt": "2026-04-07T05:23:46.339Z",
+    "updatedAt": "2026-04-07T05:23:46.339Z",
+    "slug": "kinh-te",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063cd",
+    "name": "Khoa học",
+    "description": "Khoa học tự nhiên, công nghệ, y học",
+    "image": "",
+    "isActive": true,
+    "createdAt": "2026-04-07T05:23:46.339Z",
+    "updatedAt": "2026-04-07T05:23:46.339Z",
+    "slug": "khoa-hoc",
+    "__v": 0
+  },
+  {
+    "_id": "69d494e2210371a33f8063cc",
+    "name": "Ngoại ngữ",
+    "description": "Tiếng Anh, tiếng Nhật, tiếng Hàn, tiếng Trung",
+    "image": "",
+    "isActive": true,
+    "createdAt": "2026-04-07T05:23:46.339Z",
+    "updatedAt": "2026-04-07T05:23:46.339Z",
+    "slug": "ngoai-ngu",
+    "__v": 0
+  }
+]

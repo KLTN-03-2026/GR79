@@ -7,6 +7,7 @@ dotenv.config();
 const User = require('./models/User');
 const Category = require('./models/Category');
 const Book = require('./models/Book');
+const Order = require('./models/Order');
 const Blog = require('./models/Blog');
 const Coupon = require('./models/Coupon');
 const Notification = require('./models/Notification');
@@ -29,6 +30,8 @@ const seedData = async () => {
     // Drop indexes to avoid slug conflicts
     await Category.collection.dropIndexes().catch(() => {});
     await Book.collection.dropIndexes().catch(() => {});
+    await Order.deleteMany({});
+    await Order.collection.dropIndexes().catch(() => {});
     await Blog.collection.dropIndexes().catch(() => {});
     await Job.collection.dropIndexes().catch(() => {});
 
@@ -43,6 +46,16 @@ const seedData = async () => {
       points: 5000
     });
 
+    const staff = await User.create({
+      fullName: 'Nhân Viên Sách Hub',
+      email: 'staff@sachhub.vn',
+      phone: '0903456789',
+      password: 'staff123',
+      role: 'staff',
+      gender: 'Nữ',
+      points: 500
+    });
+
     const user1 = await User.create({
       fullName: 'Nguyễn Văn Anh',
       email: 'user@sachhub.vn',
@@ -50,8 +63,19 @@ const seedData = async () => {
       password: 'user123',
       role: 'user',
       gender: 'Nam',
-      address: '201 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh',
+      address: '3 Quang Trung, Hải Châu, TP. Đà Nẵng',
       points: 1250
+    });
+
+    const user2 = await User.create({
+      fullName: 'Trần Thị Bích',
+      email: 'user2@sachhub.vn',
+      phone: '0987654321',
+      password: 'user123',
+      role: 'user',
+      gender: 'Nữ',
+      address: '3 Quang Trung, Hải Châu, TP. Đà Nẵng',
+      points: 800
     });
 
     console.log('Users seeded!');
@@ -84,8 +108,8 @@ const seedData = async () => {
         sold: 2341,
         pages: 320,
         publishYear: 2020,
-        rating: 4.5,
-        numReviews: 2341,
+        rating: 0,
+        numReviews: 0,
         isFeatured: true
       },
       {
@@ -102,8 +126,8 @@ const seedData = async () => {
         sold: 1856,
         pages: 228,
         publishYear: 2019,
-        rating: 4.7,
-        numReviews: 1856,
+        rating: 0,
+        numReviews: 0,
         isFeatured: true
       },
       {
@@ -120,8 +144,8 @@ const seedData = async () => {
         sold: 987,
         pages: 285,
         publishYear: 2021,
-        rating: 4.3,
-        numReviews: 987,
+        rating: 0,
+        numReviews: 0,
         isFeatured: true
       },
       {
@@ -138,8 +162,8 @@ const seedData = async () => {
         sold: 654,
         pages: 208,
         publishYear: 2020,
-        rating: 4.6,
-        numReviews: 654,
+        rating: 0,
+        numReviews: 0,
         isFlashSale: true
       },
       {
@@ -156,8 +180,8 @@ const seedData = async () => {
         sold: 3200,
         pages: 260,
         publishYear: 2019,
-        rating: 4.8,
-        numReviews: 3200,
+        rating: 0,
+        numReviews: 0,
         isFeatured: true,
         isFlashSale: true
       },
@@ -175,8 +199,8 @@ const seedData = async () => {
         sold: 1200,
         pages: 560,
         publishYear: 2022,
-        rating: 4.7,
-        numReviews: 1200,
+        rating: 0,
+        numReviews: 0,
         isFlashSale: true
       },
       {
@@ -193,8 +217,8 @@ const seedData = async () => {
         sold: 1500,
         pages: 244,
         publishYear: 2020,
-        rating: 4.8,
-        numReviews: 1500,
+        rating: 0,
+        numReviews: 0,
         isFeatured: true
       },
       {
@@ -211,8 +235,8 @@ const seedData = async () => {
         sold: 890,
         pages: 312,
         publishYear: 2023,
-        rating: 4.5,
-        numReviews: 890,
+        rating: 0,
+        numReviews: 0,
         isFlashSale: true
       },
       {
@@ -229,8 +253,8 @@ const seedData = async () => {
         sold: 5000,
         pages: 192,
         publishYear: 2022,
-        rating: 4.9,
-        numReviews: 5000,
+        rating: 0,
+        numReviews: 0,
         isFeatured: true
       },
       {
@@ -247,8 +271,8 @@ const seedData = async () => {
         sold: 780,
         pages: 394,
         publishYear: 2023,
-        rating: 4.6,
-        numReviews: 780
+        rating: 0,
+        numReviews: 0
       },
       {
         title: 'Atomic Habits - Thay Đổi Tí Hon Hiệu Quả Bất Ngờ',
@@ -264,8 +288,8 @@ const seedData = async () => {
         sold: 2100,
         pages: 352,
         publishYear: 2023,
-        rating: 4.7,
-        numReviews: 2100,
+        rating: 0,
+        numReviews: 0,
         isFeatured: true,
         isFlashSale: true
       },
@@ -283,19 +307,95 @@ const seedData = async () => {
         sold: 1800,
         pages: 178,
         publishYear: 2021,
-        rating: 4.6,
-        numReviews: 1800
+        rating: 0,
+        numReviews: 0
       }
     ]);
 
     console.log('Books seeded!');
+
+    // ====== ORDERS ======
+    const orderDefs = [
+      // 5 delivered (có doanh thu)
+      { status: 'delivered', paymentStatus: 'paid', daysAgo: 0, bookIndexes: [0, 4], quantities: [2, 1], paymentMethod: 'VNPAY' },
+      { status: 'delivered', paymentStatus: 'paid', daysAgo: 1, bookIndexes: [1, 2, 7], quantities: [1, 1, 1], paymentMethod: 'COD' },
+      { status: 'delivered', paymentStatus: 'paid', daysAgo: 2, bookIndexes: [5], quantities: [2], paymentMethod: 'VNPAY' },
+      { status: 'delivered', paymentStatus: 'paid', daysAgo: 4, bookIndexes: [10, 3], quantities: [1, 2], paymentMethod: 'COD' },
+      { status: 'delivered', paymentStatus: 'paid', daysAgo: 6, bookIndexes: [6, 8], quantities: [1, 3], paymentMethod: 'VNPAY' },
+      // 3 shipping
+      { status: 'shipping', paymentStatus: 'pending', daysAgo: 0, bookIndexes: [3, 9], quantities: [1, 1], paymentMethod: 'COD' },
+      { status: 'shipping', paymentStatus: 'paid', daysAgo: 1, bookIndexes: [0], quantities: [1], paymentMethod: 'VNPAY' },
+      { status: 'shipping', paymentStatus: 'pending', daysAgo: 2, bookIndexes: [11, 2], quantities: [2, 1], paymentMethod: 'COD' },
+      // 2 confirmed
+      { status: 'confirmed', paymentStatus: 'pending', daysAgo: 0, bookIndexes: [7, 1], quantities: [1, 2], paymentMethod: 'COD' },
+      { status: 'confirmed', paymentStatus: 'paid', daysAgo: 1, bookIndexes: [4], quantities: [1], paymentMethod: 'VNPAY' },
+      // 2 pending
+      { status: 'pending', paymentStatus: 'pending', daysAgo: 0, bookIndexes: [10, 5, 8], quantities: [1, 1, 2], paymentMethod: 'COD' },
+      { status: 'pending', paymentStatus: 'pending', daysAgo: 1, bookIndexes: [6], quantities: [2], paymentMethod: 'VNPAY' },
+      // 1 cancelled
+      { status: 'cancelled', paymentStatus: 'pending', daysAgo: 3, bookIndexes: [0, 11], quantities: [1, 1], paymentMethod: 'COD' }
+    ];
+
+    const stockUpdates = {};
+
+    for (const def of orderDefs) {
+      const items = def.bookIndexes.map((bi, idx) => {
+        const book = books[bi];
+        const qty = def.quantities[idx];
+        // Track stock/sold updates for delivered orders
+        if (def.status === 'delivered') {
+          const bookId = book._id.toString();
+          if (!stockUpdates[bookId]) stockUpdates[bookId] = { sold: 0, stock: 0 };
+          stockUpdates[bookId].sold += qty;
+          stockUpdates[bookId].stock += qty;
+        }
+        return {
+          book: book._id,
+          title: book.title,
+          image: book.images[0] || '',
+          price: book.price,
+          quantity: qty
+        };
+      });
+
+      const subtotal = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
+      const shippingFee = subtotal >= 300000 ? 0 : 30000;
+      const total = subtotal + shippingFee;
+      const createdAt = new Date(Date.now() - def.daysAgo * 86400000);
+
+      await Order.create({
+        user: user1._id,
+        items,
+        shippingAddress: {
+          fullName: 'Nguyễn Văn Anh',
+          phone: '0912345678',
+          address: '3 Quang Trung, Hải Châu, TP. Đà Nẵng'
+        },
+        paymentMethod: def.paymentMethod,
+        paymentStatus: def.paymentStatus,
+        subtotal,
+        shippingFee,
+        total,
+        status: def.status,
+        createdAt
+      });
+    }
+
+    // Update stock & sold for books in delivered orders
+    for (const [bookId, updates] of Object.entries(stockUpdates)) {
+      await Book.findByIdAndUpdate(bookId, {
+        $inc: { sold: updates.sold, stock: -updates.stock }
+      });
+    }
+
+    console.log(`Orders seeded! (${orderDefs.length} đơn hàng)`);
 
     // ====== BLOGS ======
     await Blog.create([
       {
         title: 'Top 10 cuốn sách kinh điển về quản trị kinh doanh bạn không thể bỏ qua',
         content: '<p>Trong thế giới kinh doanh đầy cạnh tranh, việc liên tục học hỏi là điều không thể thiếu. Dưới đây là 10 cuốn sách kinh điển mà mọi nhà quản trị nên đọc ít nhất một lần trong đời.</p><h3>1. Đắc Nhân Tâm - Dale Carnegie</h3><p>Cuốn sách này không chỉ về kinh doanh mà còn về nghệ thuật giao tiếp và xây dựng mối quan hệ...</p><h3>2. Từ Tốt Đến Vĩ Đại - Jim Collins</h3><p>Jim Collins nghiên cứu hàng trăm công ty để tìm ra công thức biến doanh nghiệp tốt thành vĩ đại...</p>',
-        excerpt: 'Những cuốn sách kinh doanh hay nhất mọi thời đại mà bạn không thể bỏ qua trong năm 2024.',
+        excerpt: 'Những cuốn sách kinh doanh hay nhất mọi thời đại mà bạn không thể bỏ qua trong năm 2026.',
         image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800',
         category: 'Review Sách',
         tags: ['kinh doanh', 'quản trị', 'sách hay'],
@@ -323,8 +423,8 @@ const seedData = async () => {
         views: 650
       },
       {
-        title: 'Hội sách quốc tế TP.HCM 2024: Quy mô lớn nhất từ trước đến nay',
-        content: '<p>Hội sách quốc tế TP.HCM 2024 quy tụ hơn 500 gian hàng từ 200 nhà xuất bản trong và ngoài nước, với hơn 300.000 đầu sách.</p>',
+        title: 'Hội sách quốc tế TP.HCM 2026: Quy mô lớn nhất từ trước đến nay',
+        content: '<p>Hội sách quốc tế TP.HCM 2026 quy tụ hơn 500 gian hàng từ 200 nhà xuất bản trong và ngoài nước, với hơn 300.000 đầu sách.</p>',
         excerpt: 'Sự kiện sách lớn nhất năm với hàng nghìn ưu đãi hấp dẫn.',
         image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800',
         category: 'Sự Kiện',
@@ -347,7 +447,7 @@ const seedData = async () => {
         maxDiscount: 50000,
         usageLimit: 1000,
         usedCount: 156,
-        startDate: new Date('2024-01-01'),
+        startDate: new Date('2026-01-01'),
         endDate: new Date('2025-12-31')
       },
       {
@@ -358,7 +458,7 @@ const seedData = async () => {
         minOrderAmount: 200000,
         usageLimit: 500,
         usedCount: 89,
-        startDate: new Date('2024-01-01'),
+        startDate: new Date('2026-01-01'),
         endDate: new Date('2025-12-31')
       },
       {
@@ -369,7 +469,7 @@ const seedData = async () => {
         minOrderAmount: 300000,
         usageLimit: 200,
         usedCount: 45,
-        startDate: new Date('2024-06-01'),
+        startDate: new Date('2026-06-01'),
         endDate: new Date('2025-12-31')
       },
       {
@@ -380,7 +480,7 @@ const seedData = async () => {
         minOrderAmount: 50000,
         usageLimit: 0,
         usedCount: 320,
-        startDate: new Date('2024-01-01'),
+        startDate: new Date('2026-01-01'),
         endDate: new Date('2025-06-30')
       }
     ]);
@@ -519,9 +619,11 @@ const seedData = async () => {
     console.log('SEED DATA HOÀN TẤT!');
     console.log('========================================');
     console.log('Admin: admin@sachhub.vn / admin123');
+    console.log('Staff: staff@sachhub.vn / staff123');
     console.log('User:  user@sachhub.vn / user123');
     console.log(`Danh mục: ${categories.length}`);
     console.log(`Sách: ${books.length}`);
+    console.log(`Đơn hàng: ${orderDefs.length} (5 delivered, 3 shipping, 2 confirmed, 2 pending, 1 cancelled)`);
     console.log('Blog: 4 bài viết');
     console.log('Coupon: 4 mã (WELCOME20, FREESHIP, SALE50K, SACHHAY10)');
     console.log('Tuyển dụng: 5 vị trí');

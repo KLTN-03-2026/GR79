@@ -4,7 +4,7 @@ let currentPage = 1;
 let totalPages = 1;
 let searchTimeout = null;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const user = getUser();
   if (!user || user.role !== 'admin') {
     if (user && user.role === 'staff') {
@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     return;
   }
+  // Kiểm tra token còn hợp lệ không
+  const valid = await verifyAdminToken();
+  if (!valid) return;
+
   const adminNameEl = document.getElementById('adminName');
   if (adminNameEl) adminNameEl.textContent = user.fullName || 'Admin';
   loadUsers();
@@ -79,12 +83,18 @@ function renderTable() {
       </td>
       <td>${createdAt ? new Date(createdAt).toLocaleDateString('vi-VN') : '-'}</td>
       <td>
-        ${(!isAdmin && !isStaff) ? `
-          <button class="btn btn-sm ${isActive ? 'btn-outline-warning' : 'btn-outline-success'}"
-                  onclick="toggleActive('${id}')" title="${isActive ? 'Khóa' : 'Mở khóa'}">
-            <i class="bi ${isActive ? 'bi-lock' : 'bi-unlock'}"></i>
+        <div class="d-flex gap-1">
+          <button class="btn btn-sm btn-outline-primary" title="Phân quyền"
+                  onclick="openChangeRole('${id}', '${(u.fullName || u.name || '').replace(/'/g, "\\'")}', '${u.role}')">
+            <i class="bi bi-shield-check"></i>
           </button>
-        ` : '<span class="text-muted">-</span>'}
+          ${(!isAdmin) ? `
+            <button class="btn btn-sm ${isActive ? 'btn-outline-warning' : 'btn-outline-success'}"
+                    onclick="toggleActive('${id}')" title="${isActive ? 'Khóa' : 'Mở khóa'}">
+              <i class="bi ${isActive ? 'bi-lock' : 'bi-unlock'}"></i>
+            </button>
+          ` : ''}
+        </div>
       </td>
     </tr>`;
   }).join('');
@@ -120,6 +130,57 @@ async function toggleActive(id) {
   try {
     await apiCall(`/users/${id}/toggle-active`, { method: 'PUT' });
     showToast(`Đã ${action} tài khoản thành công!`, 'success');
+    loadUsers();
+  } catch (err) {
+    showToast('Lỗi: ' + err.message, 'danger');
+  }
+}
+
+// ====== THÊM NHÂN VIÊN ======
+function openAddStaff() {
+  document.getElementById('staffForm').reset();
+}
+
+async function saveStaff(e) {
+  e.preventDefault();
+  const fullName = document.getElementById('staffName').value.trim();
+  const email = document.getElementById('staffEmail').value.trim();
+  const password = document.getElementById('staffPassword').value;
+  const phone = document.getElementById('staffPhone').value.trim();
+  const role = document.getElementById('staffRole').value;
+
+  try {
+    await apiCall('/users/create-staff', {
+      method: 'POST',
+      body: JSON.stringify({ fullName, email, password, phone, role })
+    });
+    showToast('Tạo tài khoản nhân viên thành công!', 'success');
+    bootstrap.Modal.getInstance(document.getElementById('staffModal')).hide();
+    loadUsers();
+  } catch (err) {
+    showToast('Lỗi: ' + err.message, 'danger');
+  }
+}
+
+// ====== PHÂN QUYỀN ======
+function openChangeRole(id, name, currentRole) {
+  document.getElementById('roleUserId').value = id;
+  document.getElementById('roleUserName').textContent = name;
+  document.getElementById('newRole').value = currentRole;
+  new bootstrap.Modal(document.getElementById('roleModal')).show();
+}
+
+async function saveRole() {
+  const id = document.getElementById('roleUserId').value;
+  const role = document.getElementById('newRole').value;
+
+  try {
+    await apiCall(`/users/${id}/role`, {
+      method: 'PUT',
+      body: JSON.stringify({ role })
+    });
+    showToast('Đã cập nhật vai trò thành công!', 'success');
+    bootstrap.Modal.getInstance(document.getElementById('roleModal')).hide();
     loadUsers();
   } catch (err) {
     showToast('Lỗi: ' + err.message, 'danger');

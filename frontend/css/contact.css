@@ -28,7 +28,6 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 28px 24px;
-  height: 100%;
 }
 
 .info-card h3 {
@@ -90,7 +89,6 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 32px;
-  height: 100%;
 }
 
 .contact-form-card h3 {
@@ -154,39 +152,54 @@
   cursor: not-allowed;
 }
 
-/* FAQ */
-.faq-section {
-  padding: 48px 0;
-  background: var(--bg-alt);
+/* Channel + FAQ section */
+.channel-faq-section {
+  padding: 0 0 48px;
 }
 
-.faq-section h2 {
+.channel-faq-section .row {
+  align-items: flex-start;
+}
+
+.channel-faq-section .col-lg-5,
+.channel-faq-section .col-lg-7 {
+  overflow: hidden;
+}
+
+.faq-title {
   font-size: 1.5rem;
   font-weight: 800;
-  text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   color: var(--text-dark);
 }
 
-.faq-section .accordion-button {
+.channel-faq-section .accordion-button {
   font-weight: 600;
   color: var(--text-dark);
   font-size: .95rem;
 }
 
-.faq-section .accordion-button:not(.collapsed) {
+.channel-faq-section .accordion-button:not(.collapsed) {
   background: var(--primary-light);
   color: var(--primary);
 }
 
-.faq-section .accordion-button:focus {
+.channel-faq-section .accordion-button:focus {
   box-shadow: 0 0 0 3px rgba(232, 73, 29, .1);
 }
 
-.faq-section .accordion-body {
+.channel-faq-section .accordion-body {
   font-size: .9rem;
   color: var(--text-gray);
   line-height: 1.7;
+}
+
+.channel-faq-section .info-card {
+  height: 100%;
+}
+
+.channel-faq-section .accordion {
+  max-width: 100%;
 }
 
 /* Map */

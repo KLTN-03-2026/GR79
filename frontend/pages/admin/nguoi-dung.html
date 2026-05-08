@@ -44,6 +44,9 @@
         <p>Quản lý tài khoản người dùng trong hệ thống</p>
       </div>
       <div class="topbar-actions">
+        <button class="btn-primary-admin" data-bs-toggle="modal" data-bs-target="#staffModal" onclick="openAddStaff()">
+          <i class="bi bi-person-plus"></i> Thêm nhân viên
+        </button>
         <button class="btn-icon"><i class="bi bi-search"></i></button>
         <button class="btn-icon">
           <i class="bi bi-bell"></i>
@@ -102,6 +105,79 @@
       </div>
     </div>
   </main>
+
+  <!-- Modal Thêm nhân viên -->
+  <div class="modal fade" id="staffModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Thêm tài khoản nhân viên</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="staffForm" onsubmit="saveStaff(event)">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Họ và tên <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="staffName" required placeholder="Nguyễn Văn A">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="staffEmail" required placeholder="email@sachhub.vn">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Mật khẩu <span class="text-danger">*</span></label>
+              <input type="password" class="form-control" id="staffPassword" required placeholder="Tối thiểu 6 ký tự" minlength="6">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Số điện thoại</label>
+              <input type="tel" class="form-control" id="staffPhone" placeholder="0912 345 678">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Vai trò <span class="text-danger">*</span></label>
+              <select class="form-select" id="staffRole">
+                <option value="staff">Nhân viên (Staff)</option>
+                <option value="admin">Quản trị viên (Admin)</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn-primary-admin">
+              <i class="bi bi-check-lg"></i> Tạo tài khoản
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Đổi vai trò -->
+  <div class="modal fade" id="roleModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Phân quyền</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="roleUserId">
+          <p class="mb-2">Người dùng: <strong id="roleUserName"></strong></p>
+          <label class="form-label fw-semibold">Chọn vai trò</label>
+          <select class="form-select" id="newRole">
+            <option value="user">Người dùng (User)</option>
+            <option value="staff">Nhân viên (Staff)</option>
+            <option value="admin">Quản trị viên (Admin)</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn-primary-admin" onclick="saveRole()">
+            <i class="bi bi-check-lg"></i> Lưu
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Toast -->
   <div id="toastContainer" class="toast-container-admin"></div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat Ho tro - Admin Sach Hub</title>
+  <title>Chat Hỗ trợ - Admin Sách Hub</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../../css/style.css">
@@ -361,20 +361,20 @@
     </div>
     <nav class="sidebar-menu">
       <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
-      <a href="sach.html"><i class="bi bi-book"></i> Quan ly sach</a>
-      <a href="don-hang.html"><i class="bi bi-box-seam"></i> Don hang</a>
-      <a href="danh-muc.html"><i class="bi bi-grid"></i> Danh muc</a>
-      <a href="nguoi-dung.html" data-role="admin"><i class="bi bi-people"></i> Nguoi dung</a>
-      <a href="khuyen-mai.html" data-role="admin"><i class="bi bi-tag"></i> Khuyen mai</a>
+      <a href="sach.html"><i class="bi bi-book"></i> Quản lý sách</a>
+      <a href="don-hang.html"><i class="bi bi-box-seam"></i> Đơn hàng</a>
+      <a href="danh-muc.html"><i class="bi bi-grid"></i> Danh mục</a>
+      <a href="nguoi-dung.html" data-role="admin"><i class="bi bi-people"></i> Người dùng</a>
+      <a href="khuyen-mai.html" data-role="admin"><i class="bi bi-tag"></i> Khuyến mãi</a>
       <a href="blog.html" data-role="admin"><i class="bi bi-newspaper"></i> Blog</a>
-      <a href="lien-he.html"><i class="bi bi-chat-dots"></i> Lien he</a>
+      <a href="lien-he.html"><i class="bi bi-chat-dots"></i> Liên hệ</a>
       <a href="chat.html" class="active" data-role="staff"><i class="bi bi-headset"></i> Chat</a>
-      <a href="thong-bao.html" data-role="admin"><i class="bi bi-bell"></i> Thong bao</a>
-      <a href="tuyen-dung.html" data-role="admin"><i class="bi bi-briefcase"></i> Tuyen dung</a>
+      <a href="thong-bao.html" data-role="admin"><i class="bi bi-bell"></i> Thông báo</a>
+      <a href="tuyen-dung.html" data-role="admin"><i class="bi bi-briefcase"></i> Tuyển dụng</a>
     </nav>
     <div class="sidebar-bottom">
-      <a href="/"><i class="bi bi-arrow-left-circle"></i> Ve Website</a>
-      <button class="btn-logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Dang xuat</button>
+      <a href="/"><i class="bi bi-arrow-left-circle"></i> Về Website</a>
+      <button class="btn-logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
     </div>
   </aside>
 
@@ -382,8 +382,8 @@
   <main class="admin-main">
     <header class="admin-topbar">
       <div class="topbar-title">
-        <h1>Chat Ho tro Khach hang</h1>
-        <p>Quan ly va tra loi tin nhan tu khach hang</p>
+        <h1>Chat Hỗ trợ Khách hàng</h1>
+        <p>Quản lý và trả lời tin nhắn từ khách hàng</p>
       </div>
       <div class="topbar-actions">
         <button class="btn-icon"><i class="bi bi-arrow-clockwise" onclick="loadConversations()"></i></button>
@@ -393,19 +393,19 @@
 
     <div class="admin-content" style="padding: 16px; height: calc(100vh - 80px);">
       <div class="chat-layout" id="chatLayout">
-        <!-- Danh sach conversations -->
+        <!-- Danh sách conversations -->
         <div class="chat-sidebar">
           <div class="chat-sidebar-header">
-            <h3><i class="bi bi-chat-left-text me-2"></i>Cuoc hoi thoai</h3>
+            <h3><i class="bi bi-chat-left-text me-2"></i>Cuộc hội thoại</h3>
             <div class="chat-search">
               <i class="bi bi-search"></i>
-              <input type="text" placeholder="Tim kiem khach hang..." id="chatSearchInput">
+              <input type="text" placeholder="Tìm kiếm khách hàng..." id="chatSearchInput">
             </div>
           </div>
           <div class="chat-list" id="chatList">
             <div style="text-align:center; padding:40px; color:#9CA3AF;">
               <i class="bi bi-chat-dots" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-              Dang tai...
+              Đang tải...
             </div>
           </div>
         </div>
@@ -414,8 +414,8 @@
         <div class="chat-main" id="chatMain">
           <div class="chat-no-select">
             <i class="bi bi-chat-square-text"></i>
-            <h4 style="color:#6B7280;">Chon cuoc hoi thoai</h4>
-            <p>Chon mot cuoc hoi thoai tu danh sach ben trai de bat dau tra loi.</p>
+            <h4 style="color:#6B7280;">Chọn cuộc hội thoại</h4>
+            <p>Chọn một cuộc hội thoại từ danh sách bên trái để bắt đầu trả lời.</p>
           </div>
         </div>
       </div>

@@ -4,6 +4,9 @@
 *.txt
 *.sh
 *.md
+extracted_cansua
+extracted_docx
+DoAnTotNghiep_Nhom52
 
 # --- Ngoại lệ: giữ lại ---
 !taikhoan.txt

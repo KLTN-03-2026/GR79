@@ -23,10 +23,45 @@ const register = async (req, res) => {
       });
     }
 
-    if (password.length < 6) {
+    // Mật khẩu mạnh: tối thiểu 8 ký tự, có chữ HOA, có số, có ký tự đặc biệt
+    if (password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: 'Mật khẩu phải có ít nhất 6 ký tự'
+        message: 'Mật khẩu phải có ít nhất 8 ký tự'
+      });
+    }
+    if (!/[A-Z]/.test(password)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Mật khẩu phải có ít nhất 1 chữ in hoa'
+      });
+    }
+    if (!/[0-9]/.test(password)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Mật khẩu phải có ít nhất 1 chữ số'
+      });
+    }
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~`]/.test(password)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Mật khẩu phải có ít nhất 1 ký tự đặc biệt (!@#$%^&* ...)'
+      });
+    }
+
+    // Validate số điện thoại: phải đủ 10-11 chữ số, bắt đầu bằng 0
+    if (phone) {
+      const phoneDigits = String(phone).replace(/\D/g, '');
+      if (!/^0\d{9,10}$/.test(phoneDigits)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Số điện thoại phải có 10-11 chữ số và bắt đầu bằng 0'
+        });
+      }
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'Vui lòng nhập số điện thoại'
       });
     }
 

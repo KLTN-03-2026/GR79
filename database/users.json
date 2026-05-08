@@ -1,0 +1,62 @@
+[
+  {
+    "_id": "69d494e1210371a33f8063c3",
+    "fullName": "Admin Sách Hub",
+    "email": "admin@sachhub.vn",
+    "phone": "0901234567",
+    "password": "$2a$12$PAYX1dip7/5dTH0Alj5O6O5BqiZjgMRz2VfO0354B0blNiTi/MuZ6",
+    "avatar": "",
+    "gender": "Nam",
+    "address": "",
+    "role": "admin",
+    "points": 5000,
+    "isActive": true,
+    "createdAt": "2026-04-07T05:23:45.954Z",
+    "updatedAt": "2026-04-09T10:48:04.079Z",
+    "__v": 1,
+    "addresses": [
+      {
+        "fullName": "tt",
+        "phone": "0337163992",
+        "province": "Tỉnh Lạng Sơn",
+        "district": "Huyện Bình Gia",
+        "ward": "Xã Tân Hòa",
+        "detail": "111",
+        "isDefault": true,
+        "_id": "69d783e48ef9e53ce46368d5"
+      }
+    ]
+  },
+  {
+    "_id": "69d494e2210371a33f8063c6",
+    "fullName": "Nguy?n Van Anh",
+    "email": "user@sachhub.vn",
+    "phone": "0912345678",
+    "password": "$2a$12$6QwK12jr5.N3M47rbqcaH.2vT084FEOZjbeBx4/Ul15T1n0ko786a",
+    "avatar": "",
+    "gender": "Nam",
+    "address": "3 Quang Trung, Hải Châu, TP. Đà Nẵng",
+    "role": "user",
+    "points": 1250,
+    "isActive": true,
+    "createdAt": "2026-04-07T05:23:46.151Z",
+    "updatedAt": "2026-04-07T07:53:04.574Z",
+    "__v": 0
+  },
+  {
+    "_id": "69d4b7ce94dab7bbcfe3628f",
+    "fullName": "Test User 32139",
+    "email": "test32139@test.com",
+    "phone": "0901234569",
+    "password": "$2a$12$gz6oGHbgds6k4jDxoj0RP.5iZj.R2/DcTBSe8XekDI8asXmatwu8y",
+    "avatar": "",
+    "gender": "Khác",
+    "address": "",
+    "role": "user",
+    "points": 0,
+    "isActive": true,
+    "createdAt": "2026-04-07T07:52:46.094Z",
+    "updatedAt": "2026-04-07T07:52:46.094Z",
+    "__v": 0
+  }
+]

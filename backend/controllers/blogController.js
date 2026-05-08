@@ -54,11 +54,19 @@ const getBlogs = async (req, res) => {
 // Lấy bài viết theo slug (public, tăng views)
 const getBlogBySlug = async (req, res) => {
   try {
-    const blog = await Blog.findOneAndUpdate(
-      { slug: req.params.slug, isPublished: true },
-      { $inc: { views: 1 } },
-      { new: true }
-    ).populate('author', 'fullName avatar');
+    const param = req.params.slug;
+    let blog;
+
+    // Hỗ trợ tìm theo ID (cho admin edit) hoặc slug (cho frontend)
+    if (param.match(/^[0-9a-fA-F]{24}$/)) {
+      blog = await Blog.findById(param).populate('author', 'fullName avatar');
+    } else {
+      blog = await Blog.findOneAndUpdate(
+        { slug: param, isPublished: true },
+        { $inc: { views: 1 } },
+        { new: true }
+      ).populate('author', 'fullName avatar');
+    }
 
     if (!blog) {
       return res.status(404).json({ success: false, message: 'Không tìm thấy bài viết' });

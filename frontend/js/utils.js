@@ -33,6 +33,15 @@ async function apiCall(endpoint, options = {}) {
     const data = await response.json();
 
     if (!response.ok) {
+      // Token hết hạn hoặc không hợp lệ -> redirect về đăng nhập
+      // KHÔNG redirect cho các endpoint auth (login/register) - phải hiện thông báo lỗi cho user
+      const isAuthEndpoint = endpoint.startsWith('/auth/login') || endpoint.startsWith('/auth/register');
+      if (response.status === 401 && !isAuthEndpoint) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/pages/dang-nhap.html';
+        return;
+      }
       throw new Error(data.message || 'Có lỗi xảy ra');
     }
 
@@ -148,6 +157,30 @@ function showLoading(container) {
 function truncateText(text, maxLength) {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + '...';
+}
+
+// ====== KIỂM TRA TOKEN ADMIN ======
+async function verifyAdminToken() {
+  const token = getToken();
+  const user = getUser();
+  if (!token || !user) {
+    window.location.href = '/pages/dang-nhap.html';
+    return false;
+  }
+  try {
+    const response = await fetch(`${API_URL}/auth/profile`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/pages/dang-nhap.html';
+      return false;
+    }
+    return true;
+  } catch {
+    return true; // Lỗi mạng thì cho qua, để API call chính xử lý
+  }
 }
 
 // ====== CART COUNT (dùng chung) ======

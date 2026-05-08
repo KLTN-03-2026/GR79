@@ -6,10 +6,17 @@ const { cloudinary } = require('../config/cloudinary');
 // @route   GET /api/books
 const getBooks = async (req, res) => {
   try {
-    const { category, minPrice, maxPrice, search, sort, rating, page = 1, limit = 12 } = req.query;
+    const { category, minPrice, maxPrice, search, sort, rating, status, page = 1, limit = 12 } = req.query;
 
     // Build filter
     const filter = { isActive: true };
+
+    // Loc theo trang thai ton kho
+    if (status === 'in-stock' || status === 'in_stock') {
+      filter.stock = { $gt: 0 };
+    } else if (status === 'out-of-stock' || status === 'out_of_stock') {
+      filter.stock = 0;
+    }
 
     if (category) {
       // Hỗ trợ cả ObjectId và slug

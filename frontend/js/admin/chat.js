@@ -6,12 +6,16 @@ let currentUser = null;
 let typingTimeout = null;
 
 // ====== INIT ======
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   currentUser = getUser();
   if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'staff')) {
     window.location.href = '/pages/dang-nhap.html';
     return;
   }
+
+  // Kiểm tra token còn hợp lệ không
+  const valid = await verifyAdminToken();
+  if (!valid) return;
 
   // Avatar
   const avatarEl = document.getElementById('avatarUser');
@@ -45,7 +49,7 @@ async function loadConversations() {
     document.getElementById('chatList').innerHTML = `
       <div style="text-align:center; padding:40px; color:#EF4444;">
         <i class="bi bi-exclamation-triangle" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-        Loi tai du lieu
+        Lỗi tải dữ liệu
       </div>
     `;
   }
@@ -59,7 +63,7 @@ function renderConversationList(list) {
     container.innerHTML = `
       <div style="text-align:center; padding:40px; color:#9CA3AF;">
         <i class="bi bi-chat-dots" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-        Chua co cuoc hoi thoai nao
+        Chưa có cuộc hội thoại nào
       </div>
     `;
     return;
@@ -67,9 +71,9 @@ function renderConversationList(list) {
 
   container.innerHTML = list.map(conv => {
     const customer = conv.customer || {};
-    const name = customer.fullName || 'Khach hang';
+    const name = customer.fullName || 'Khách hàng';
     const initial = name.charAt(0).toUpperCase();
-    const preview = conv.lastMessage || 'Chua co tin nhan';
+    const preview = conv.lastMessage || 'Chưa có tin nhắn';
     const time = conv.lastMessageAt ? formatTimeShort(conv.lastMessageAt) : '';
     const unread = conv.unreadByAdmin || 0;
     const isActive = conv._id === activeConversationId;
@@ -139,7 +143,7 @@ async function selectConversation(convId) {
     const idx = conversations.findIndex(c => c._id === convId);
     if (idx !== -1) conversations[idx].unreadByAdmin = 0;
   } catch (error) {
-    console.error('Loi tai conversation:', error);
+    console.error('Lỗi tải conversation:', error);
   }
 }
 
@@ -147,7 +151,7 @@ async function selectConversation(convId) {
 function renderChatMain(conv) {
   const mainEl = document.getElementById('chatMain');
   const customer = conv.customer || {};
-  const name = customer.fullName || 'Khach hang';
+  const name = customer.fullName || 'Khách hàng';
   const email = customer.email || '';
   const initial = name.charAt(0).toUpperCase();
   const messages = conv.messages || [];
@@ -165,19 +169,19 @@ function renderChatMain(conv) {
         </div>
       </div>
       <div>
-        <span class="badge ${conv.status === 'active' ? 'bg-success' : 'bg-secondary'}">${conv.status === 'active' ? 'Dang hoat dong' : 'Da dong'}</span>
+        <span class="badge ${conv.status === 'active' ? 'bg-success' : 'bg-secondary'}">${conv.status === 'active' ? 'Đang hoạt động' : 'Đã đóng'}</span>
       </div>
     </div>
     <div class="chat-messages" id="chatMessages">
       ${messages.length === 0 ? `
         <div style="text-align:center; padding:40px; color:#9CA3AF;">
           <i class="bi bi-chat-dots" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-          Chua co tin nhan
+          Chưa có tin nhắn
         </div>
       ` : messages.map(msg => renderMessageHTML(msg)).join('')}
     </div>
     <div class="chat-input-area">
-      <input type="text" id="adminChatInput" placeholder="Nhap tin nhan tra loi..." autocomplete="off">
+      <input type="text" id="adminChatInput" placeholder="Nhập tin nhắn trả lời..." autocomplete="off">
       <button onclick="sendAdminMessage()" id="adminSendBtn"><i class="bi bi-send-fill"></i></button>
     </div>
   `;
@@ -206,7 +210,7 @@ function renderMessageHTML(msg) {
   const isCustomer = msg.senderRole === 'user';
   const roleClass = isCustomer ? 'customer' : 'admin';
   const sender = msg.sender || {};
-  const name = sender.fullName || (isCustomer ? 'Khach hang' : 'Nhan vien');
+  const name = sender.fullName || (isCustomer ? 'Khách hàng' : 'Nhân viên');
   const initial = name.charAt(0).toUpperCase();
   const time = msg.createdAt ? formatTimeFull(msg.createdAt) : '';
 
@@ -256,7 +260,7 @@ async function sendAdminMessage() {
     // Cap nhat preview trong list
     updateConversationPreview(activeConversationId, text);
   } catch (error) {
-    console.error('Loi gui tin nhan:', error);
+    console.error('Lỗi gửi tin nhắn:', error);
   }
 }
 
@@ -389,10 +393,10 @@ function formatTimeShort(dateStr) {
   const diffHr = Math.floor(diffMs / 3600000);
   const diffDay = Math.floor(diffMs / 86400000);
 
-  if (diffMin < 1) return 'Vua xong';
-  if (diffMin < 60) return diffMin + ' phut';
-  if (diffHr < 24) return diffHr + ' gio';
-  if (diffDay < 7) return diffDay + ' ngay';
+  if (diffMin < 1) return 'Vừa xong';
+  if (diffMin < 60) return diffMin + ' phút';
+  if (diffHr < 24) return diffHr + ' giờ';
+  if (diffDay < 7) return diffDay + ' ngày';
   return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
 }
 

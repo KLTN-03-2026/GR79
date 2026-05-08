@@ -191,6 +191,55 @@ async function editBook(id) {
   }
 }
 
+// ====== DRAG & DROP ======
+document.addEventListener('DOMContentLoaded', () => {
+  const uploadArea = document.getElementById('uploadArea');
+  if (uploadArea) {
+    ['dragenter', 'dragover'].forEach(evt => {
+      uploadArea.addEventListener(evt, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadArea.classList.add('drag-over');
+      });
+    });
+    ['dragleave', 'drop'].forEach(evt => {
+      uploadArea.addEventListener(evt, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadArea.classList.remove('drag-over');
+      });
+    });
+    uploadArea.addEventListener('drop', e => {
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        handleDroppedFiles(files);
+      }
+    });
+  }
+});
+
+function handleDroppedFiles(files) {
+  const preview = document.getElementById('imagePreview');
+  Array.from(files).forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const uid = 'img_' + (++imageUidCounter);
+    file._uid = uid;
+    selectedImages.push(file);
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const div = document.createElement('div');
+      div.className = 'preview-item';
+      div.dataset.uid = uid;
+      div.innerHTML = `
+        <img src="${e.target.result}" alt="">
+        <button type="button" class="remove-img" onclick="removeImage(this, '${uid}')"><i class="bi bi-x"></i></button>
+      `;
+      preview.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 // ====== IMAGE PREVIEW ======
 let imageUidCounter = 0;
 

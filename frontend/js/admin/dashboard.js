@@ -34,12 +34,13 @@ let categoryChart = null;
 
 async function loadDashboard() {
   try {
-    const data = await apiCall('/dashboard/stats');
+    const period = document.getElementById('chartPeriod')?.value || 'week';
+    const data = await apiCall(`/dashboard/stats?period=${period}`);
     const stats = data.data || data;
     renderStats(stats);
     renderRecentOrders(stats.recentOrders || []);
     renderBestSelling(stats.bestSellingBooks || []);
-    initCharts(stats);
+    initCharts(stats, period);
   } catch (error) {
     console.error('Load dashboard error:', error);
     // Load with demo data if API fails
@@ -130,15 +131,20 @@ function renderBestSelling(books) {
 }
 
 // ====== CHARTS ======
-function initCharts(data) {
+function initCharts(data, period = 'week') {
   // Revenue Chart - parse weeklyRevenue from API
   const revenueCtx = document.getElementById('revenueChart').getContext('2d');
   const weeklyRevenue = data.weeklyRevenue || [];
+  const TZ_VN = 'Asia/Ho_Chi_Minh';
   const revenueData = weeklyRevenue.length > 0
     ? {
         labels: weeklyRevenue.map(item => {
-          const d = new Date(item.date);
-          return d.toLocaleDateString('vi-VN', { weekday: 'short' });
+          // Parse "YYYY-MM-DD" như giờ VN để tránh lệch ngày khi format
+          const d = new Date(item.date + 'T00:00:00+07:00');
+          if (period === 'month') {
+            return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', timeZone: TZ_VN });
+          }
+          return d.toLocaleDateString('vi-VN', { weekday: 'short', timeZone: TZ_VN });
         }),
         data: weeklyRevenue.map(item => item.revenue || 0)
       }
@@ -146,6 +152,23 @@ function initCharts(data) {
         labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
         data: [1200000, 1900000, 1500000, 2200000, 1800000, 2500000, 2100000]
       });
+
+  // Hiển thị overlay khi tất cả doanh thu = 0 trong khoảng thời gian
+  const allZero = weeklyRevenue.length > 0 && revenueData.data.every(v => !v);
+  const cardBody = revenueCtx.canvas.parentElement;
+  let overlay = cardBody.querySelector('.chart-empty-overlay');
+  if (allZero) {
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'chart-empty-overlay';
+      overlay.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-gray);font-size:14px;pointer-events:none;text-align:center;padding:8px;';
+      overlay.innerHTML = '<i class="bi bi-bar-chart" style="font-size:32px;opacity:.4;margin-bottom:6px;"></i><div>Chưa có doanh thu trong khoảng thời gian này</div>';
+      cardBody.style.position = 'relative';
+      cardBody.appendChild(overlay);
+    }
+  } else if (overlay) {
+    overlay.remove();
+  }
 
   if (revenueChart) revenueChart.destroy();
   revenueChart = new Chart(revenueCtx, {
@@ -189,7 +212,12 @@ function initCharts(data) {
         },
         x: {
           grid: { display: false },
-          ticks: { font: { size: 12 } }
+          ticks: {
+            font: { size: 12 },
+            autoSkip: true,
+            maxRotation: period === 'month' ? 45 : 0,
+            maxTicksLimit: period === 'month' ? 10 : 7
+          }
         }
       }
     }

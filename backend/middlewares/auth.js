@@ -32,11 +32,18 @@ const protect = async (req, res, next) => {
   }
 };
 
-const adminOnly = (req, res, next) => {
-  if (req.user.role !== 'admin') {
+const staffOrAdmin = (req, res, next) => {
+  if (req.user.role !== 'admin' && req.user.role !== 'staff') {
     return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
   }
   next();
 };
 
-module.exports = { protect, adminOnly };
+const adminOnly = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, message: 'Chỉ admin mới có quyền' });
+  }
+  next();
+};
+
+module.exports = { protect, staffOrAdmin, adminOnly };

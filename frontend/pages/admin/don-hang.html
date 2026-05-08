@@ -55,6 +55,20 @@
 
     <div class="admin-content">
       <div class="admin-card">
+        <!-- Search bar -->
+        <div style="padding: 16px 20px 0 20px;">
+          <div style="position: relative; max-width: 480px;">
+            <i class="bi bi-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-gray);font-size:14px;"></i>
+            <input type="text" id="orderSearchInput" placeholder="Tìm theo mã đơn, tên khách hàng, email, SĐT..."
+              style="width:100%;padding:9px 36px 9px 36px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;"
+              autocomplete="off">
+            <button id="orderSearchClear" type="button" title="Xóa"
+              style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--text-gray);cursor:pointer;padding:4px;">
+              <i class="bi bi-x-circle-fill"></i>
+            </button>
+          </div>
+        </div>
+
         <!-- Tab filters -->
         <div class="tab-filters">
           <button class="tab-btn active" data-status="" onclick="filterByStatus(this)">

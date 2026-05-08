@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "69d3eccfc0ae069d5d18c813",
+    "fullName": "Test User",
+    "email": "test@test.com",
+    "phone": "0900000000",
+    "subject": "ho-tro-don-hang",
+    "message": "Hello test message",
+    "status": "new",
+    "createdAt": "2026-04-06T17:26:39.569Z",
+    "updatedAt": "2026-04-06T17:26:39.569Z",
+    "__v": 0
+  },
+  {
+    "_id": "69d4b7cd94dab7bbcfe3628c",
+    "fullName": "Test User",
+    "email": "test@test.com",
+    "phone": "0901234567",
+    "subject": "Test subject",
+    "message": "Test message content",
+    "status": "new",
+    "createdAt": "2026-04-07T07:52:45.979Z",
+    "updatedAt": "2026-04-07T07:52:45.979Z",
+    "__v": 0
+  }
+]

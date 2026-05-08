@@ -28,8 +28,9 @@ function renderHeader() {
           <span>Sách Hub</span>
         </a>
         <div class="header-search">
-          <input type="text" id="searchInput" placeholder="Tìm kiếm sách, tác giả, thể loại...">
+          <input type="text" id="searchInput" placeholder="Tìm kiếm sách, tác giả, thể loại..." autocomplete="off">
           <button class="search-btn" onclick="handleSearch()"><i class="bi bi-search"></i></button>
+          <div class="search-suggest" id="searchSuggest"></div>
         </div>
         <div class="header-actions">
           <a href="/pages/thong-bao.html" class="header-action-item">
@@ -151,13 +152,27 @@ function initComponents() {
   if (headerEl) headerEl.innerHTML = renderHeader();
   if (footerEl) footerEl.innerHTML = renderFooter();
 
-  // Search enter key
+  // Search enter key + suggest dropdown
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') handleSearch();
+      if (e.key === 'Enter') {
+        hideSearchSuggest();
+        handleSearch();
+      }
+    });
+    searchInput.addEventListener('input', onSearchInput);
+    searchInput.addEventListener('focus', () => {
+      const q = searchInput.value.trim();
+      if (q) fetchSearchSuggest(q);
     });
   }
+
+  // Hide dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    const wrap = document.querySelector('.header-search');
+    if (wrap && !wrap.contains(e.target)) hideSearchSuggest();
+  });
 
   // Update auth state
   if (typeof updateHeaderAuth === 'function') {
@@ -232,6 +247,83 @@ async function updateNotifCount() {
   } catch (error) {
     badge.style.display = 'none';
   }
+}
+
+// ====== SEARCH SUGGEST DROPDOWN ======
+let _searchSuggestTimer = null;
+let _searchSuggestSeq = 0;
+
+function onSearchInput(e) {
+  const q = e.target.value.trim();
+  clearTimeout(_searchSuggestTimer);
+  if (!q) {
+    hideSearchSuggest();
+    return;
+  }
+  _searchSuggestTimer = setTimeout(() => fetchSearchSuggest(q), 250);
+}
+
+async function fetchSearchSuggest(q) {
+  const box = document.getElementById('searchSuggest');
+  if (!box) return;
+  const seq = ++_searchSuggestSeq;
+  box.classList.add('show');
+  box.innerHTML = '<div class="search-suggest-loading"><div class="spinner-border spinner-border-sm"></div> Đang tìm...</div>';
+  try {
+    const data = await apiCall(`/books?search=${encodeURIComponent(q)}&limit=8`);
+    if (seq !== _searchSuggestSeq) return; // outdated response
+    const books = data.data || data.books || [];
+    renderSearchSuggest(books, q);
+  } catch (err) {
+    if (seq !== _searchSuggestSeq) return;
+    box.innerHTML = '<div class="search-suggest-empty">Không thể tải gợi ý</div>';
+  }
+}
+
+function renderSearchSuggest(books, q) {
+  const box = document.getElementById('searchSuggest');
+  if (!box) return;
+
+  if (!books.length) {
+    box.innerHTML = `<div class="search-suggest-empty"><i class="bi bi-search"></i> Không tìm thấy sách phù hợp với "${escapeHtml(q)}"</div>`;
+    box.classList.add('show');
+    return;
+  }
+
+  const items = books.map(b => {
+    const slug = b.slug || b._id;
+    const img = (b.images && b.images[0]) || 'https://placehold.co/60x80/FFF3ED/E8491D?text=S';
+    const price = typeof formatPrice === 'function' ? formatPrice(b.price || 0) : (b.price || 0);
+    return `
+      <a href="/pages/chi-tiet-sach.html?slug=${slug}" class="search-suggest-item">
+        <img src="${img}" alt="">
+        <div class="search-suggest-info">
+          <div class="search-suggest-title">${escapeHtml(b.title || '')}</div>
+          <div class="search-suggest-author">${escapeHtml(b.author || '')}</div>
+          <div class="search-suggest-price">${price}</div>
+        </div>
+      </a>
+    `;
+  }).join('');
+
+  box.innerHTML = items + `
+    <a href="/pages/tim-kiem.html?q=${encodeURIComponent(q)}" class="search-suggest-more">
+      Xem tất cả kết quả cho "${escapeHtml(q)}" <i class="bi bi-arrow-right"></i>
+    </a>
+  `;
+  box.classList.add('show');
+}
+
+function hideSearchSuggest() {
+  const box = document.getElementById('searchSuggest');
+  if (box) {
+    box.classList.remove('show');
+    box.innerHTML = '';
+  }
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 // Auto init when DOM ready
