@@ -42,8 +42,10 @@ async function loadUsers() {
     const pagination = res.pagination || {};
     totalPages = pagination.totalPages || res.totalPages || res.total_pages || 1;
     currentPage = pagination.page || res.currentPage || res.current_page || currentPage;
+    const total = pagination.total ?? res.total ?? users.length;
     renderTable();
     renderPagination();
+    renderPageInfo(total);
   } catch (err) {
     showToast('Không thể tải người dùng: ' + err.message, 'danger');
   }
@@ -98,6 +100,20 @@ function renderTable() {
       </td>
     </tr>`;
   }).join('');
+}
+
+function renderPageInfo(total) {
+  const el = document.getElementById('pageInfo');
+  if (!el) return;
+  const count = Number(total) || 0;
+  if (count === 0) {
+    el.textContent = 'Không có kết quả';
+    return;
+  }
+  const limit = 10;
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, count);
+  el.textContent = `Hiển thị ${start}-${end} / ${count} người dùng`;
 }
 
 function renderPagination() {

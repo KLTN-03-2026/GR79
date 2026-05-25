@@ -88,9 +88,10 @@ const getCategoryBySlug = async (req, res) => {
 // @route   POST /api/categories
 const createCategory = async (req, res) => {
   try {
-    const { name, description, image } = req.body;
+    const { name, description, isActive } = req.body;
+    const image = req.file ? req.file.path : req.body.image;
 
-    if (!name) {
+    if (!name || !name.trim()) {
       return res.status(400).json({
         success: false,
         message: 'Vui lòng nhập tên danh mục'
@@ -98,7 +99,7 @@ const createCategory = async (req, res) => {
     }
 
     // Check trùng tên
-    const existing = await Category.findOne({ name });
+    const existing = await Category.findOne({ name: name.trim() });
     if (existing) {
       return res.status(400).json({
         success: false,
@@ -106,7 +107,10 @@ const createCategory = async (req, res) => {
       });
     }
 
-    const category = await Category.create({ name, description, image });
+    const payload = { name: name.trim(), description, image };
+    if (isActive !== undefined) payload.isActive = isActive === 'true' || isActive === true;
+
+    const category = await Category.create(payload);
 
     res.status(201).json({
       success: true,
@@ -126,7 +130,8 @@ const createCategory = async (req, res) => {
 // @route   PUT /api/categories/:id
 const updateCategory = async (req, res) => {
   try {
-    const { name, description, image } = req.body;
+    const { name, description, isActive } = req.body;
+    const image = req.file ? req.file.path : req.body.image;
 
     const category = await Category.findById(req.params.id);
 
@@ -138,19 +143,20 @@ const updateCategory = async (req, res) => {
     }
 
     // Check trùng tên (trừ chính nó)
-    if (name && name !== category.name) {
-      const existing = await Category.findOne({ name });
+    if (name && name.trim() !== category.name) {
+      const existing = await Category.findOne({ name: name.trim() });
       if (existing) {
         return res.status(400).json({
           success: false,
           message: 'Tên danh mục đã tồn tại'
         });
       }
-      category.name = name;
+      category.name = name.trim();
     }
 
     if (description !== undefined) category.description = description;
     if (image !== undefined) category.image = image;
+    if (isActive !== undefined) category.isActive = isActive === 'true' || isActive === true;
 
     await category.save();
 

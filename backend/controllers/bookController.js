@@ -132,6 +132,19 @@ const createBook = async (req, res) => {
       publishYear, language, isFeatured, isFlashSale
     } = req.body;
 
+    if (!title || !title.trim()) {
+      return res.status(400).json({ success: false, message: 'Vui lòng nhập tên sách' });
+    }
+
+    // Chặn trùng tên sách (case-insensitive, chỉ xét sách đang hoạt động)
+    const existing = await Book.findOne({
+      title: { $regex: `^${title.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, $options: 'i' },
+      isActive: { $ne: false }
+    });
+    if (existing) {
+      return res.status(400).json({ success: false, message: 'Tên sách đã tồn tại' });
+    }
+
     // Lấy URLs ảnh từ Cloudinary upload
     const images = req.files ? req.files.map(file => file.path) : [];
 
@@ -188,6 +201,18 @@ const updateBook = async (req, res) => {
       publishYear, language, isFeatured, isFlashSale, existingImages
     } = req.body;
 
+    // Check trùng tên (trừ chính nó)
+    if (title !== undefined && title.trim() && title.trim() !== book.title) {
+      const existing = await Book.findOne({
+        _id: { $ne: book._id },
+        title: { $regex: `^${title.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, $options: 'i' },
+        isActive: { $ne: false }
+      });
+      if (existing) {
+        return res.status(400).json({ success: false, message: 'Tên sách đã tồn tại' });
+      }
+    }
+
     // Cập nhật các trường
     if (title !== undefined) book.title = title;
     if (author !== undefined) book.author = author;
@@ -205,12 +230,12 @@ const updateBook = async (req, res) => {
     if (isFlashSale !== undefined) book.isFlashSale = isFlashSale === 'true' || isFlashSale === true;
 
     // Handle images
-    // existingImages: mảng URL ảnh cũ muốn giữ lại
-    let updatedImages = [];
-
-    if (existingImages) {
-      updatedImages = Array.isArray(existingImages) ? existingImages : [existingImages];
-    }
+    // existingImages: mảng URL ảnh cũ user còn giữ lại (FE luôn gửi field này khi PUT,
+    // có thể là chuỗi rỗng "" để báo đã xóa hết)
+    const existingArr = existingImages === undefined
+      ? null
+      : (Array.isArray(existingImages) ? existingImages : [existingImages]).filter(u => u && u.trim());
+    let updatedImages = existingArr || [];
 
     // Thêm ảnh mới nếu có upload
     if (req.files && req.files.length > 0) {
@@ -218,7 +243,7 @@ const updateBook = async (req, res) => {
       updatedImages = [...updatedImages, ...newImages];
     }
 
-    // Chỉ cập nhật images nếu có gửi dữ liệu ảnh
+    // Chỉ cập nhật images nếu FE có ý định cập nhật (gửi existingImages hoặc upload thêm)
     if (existingImages !== undefined || (req.files && req.files.length > 0)) {
       // Xóa ảnh cũ trên Cloudinary nếu không còn giữ
       const removedImages = book.images.filter(img => !updatedImages.includes(img));

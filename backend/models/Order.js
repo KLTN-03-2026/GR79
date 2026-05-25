@@ -42,6 +42,10 @@ const orderSchema = new mongoose.Schema({
     enum: ['pending', 'paid', 'failed'],
     default: 'pending'
   },
+  refundedAt: {
+    type: Date,
+    default: null
+  },
   subtotal: {
     type: Number,
     required: true

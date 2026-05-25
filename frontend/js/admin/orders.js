@@ -72,9 +72,10 @@ async function loadOrders(page = 1) {
       const initial = (order.user?.fullName || order.shippingAddress?.fullName || order.customerName || 'K').charAt(0).toUpperCase();
       const customerName = order.user?.fullName || order.shippingAddress?.fullName || order.customerName || 'Khách hàng';
       const date = new Date(order.createdAt).toLocaleDateString('vi-VN');
-      const paymentMethod = order.paymentMethod === 'vnpay' ? 'VNPAY' : 'COD';
-      const paymentBadge = order.paymentMethod === 'vnpay'
-        ? '<span style="background:#DBEAFE;color:#2563EB;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">VNPAY</span>'
+      const isVNPay = (order.paymentMethod || '').toUpperCase() === 'VNPAY';
+      const paymentMethod = isVNPay ? 'VNPay' : 'COD';
+      const paymentBadge = isVNPay
+        ? '<span style="background:#DBEAFE;color:#2563EB;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">VNPay</span>'
         : '<span style="background:#F3F4F6;color:#6B7280;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">COD</span>';
 
       // Nút xem chi tiết → mở modal

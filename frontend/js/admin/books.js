@@ -174,11 +174,11 @@ async function editBook(id) {
     document.getElementById('bookFeatured').checked = book.isFeatured || book.featured || false;
     document.getElementById('bookFlashSale').checked = book.isFlashSale || book.flashSale || false;
 
-    // Show existing images
+    // Show existing images (đánh dấu data-existing-url để khi save còn biết URL nào user giữ lại)
     const preview = document.getElementById('imagePreview');
     const images = book.images || (book.image ? [book.image] : []);
-    preview.innerHTML = images.map((img, i) => `
-      <div class="preview-item">
+    preview.innerHTML = images.map((img) => `
+      <div class="preview-item" data-existing-url="${img}">
         <img src="${img}" alt="">
         <button type="button" class="remove-img" onclick="this.parentElement.remove()"><i class="bi bi-x"></i></button>
       </div>
@@ -307,6 +307,19 @@ async function saveBook() {
   selectedImages.forEach(file => {
     formData.append('images', file);
   });
+
+  // Khi sửa sách: gửi danh sách URL ảnh cũ user còn giữ lại để backend xóa các ảnh đã bỏ
+  if (id) {
+    const existingUrls = Array.from(
+      document.querySelectorAll('#imagePreview .preview-item[data-existing-url]')
+    ).map(el => el.getAttribute('data-existing-url'));
+    if (existingUrls.length === 0) {
+      // Empty string để FE báo backend rằng user đã xóa hết ảnh cũ
+      formData.append('existingImages', '');
+    } else {
+      existingUrls.forEach(url => formData.append('existingImages', url));
+    }
+  }
 
   try {
     const endpoint = id ? `/books/${id}` : '/books';

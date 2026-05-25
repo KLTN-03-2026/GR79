@@ -100,12 +100,14 @@ function renderOrderCard(order) {
 
   const items = order.items || order.products || [];
   const totalAmount = order.total || order.totalAmount || 0;
+  const totalQty = items.reduce((s, i) => s + (i.quantity || 0), 0);
 
-  const itemsHTML = items.map(item => {
-    const name = item.title || item.name || 'Sản phẩm';
-    const image = item.image || item.thumbnail || 'https://placehold.co/60x75?text=Book';
+  const itemsHTML = items.length ? items.map(item => {
+    const book = item.book && typeof item.book === 'object' ? item.book : null;
+    const name = item.title || item.name || (book && book.title) || 'Sản phẩm';
+    const image = item.image || item.thumbnail || (book && book.images && book.images[0]) || 'https://placehold.co/60x75?text=Book';
     const qty = item.quantity || 1;
-    const price = item.price || 0;
+    const price = item.price || (book && book.price) || 0;
 
     return `
       <div class="order-item">
@@ -117,7 +119,7 @@ function renderOrderCard(order) {
         <div class="order-item-price">${formatPrice(price * qty)}</div>
       </div>
     `;
-  }).join('');
+  }).join('') : '<p class="text-center text-muted py-2 mb-0" style="font-size:13px;">Đơn hàng không có sản phẩm nào</p>';
 
   const cancelBtn = order.status === 'pending' ? `
     <button class="btn-outline-custom" style="padding: 6px 16px; font-size: 13px; color: var(--danger); border-color: var(--danger);"
@@ -132,6 +134,7 @@ function renderOrderCard(order) {
         <div class="d-flex align-items-center gap-3 flex-wrap">
           <span class="order-code"><i class="bi bi-receipt me-1"></i>${orderCode}</span>
           <span class="order-date"><i class="bi bi-calendar3 me-1"></i>${orderDate}</span>
+          <span class="order-date"><i class="bi bi-box me-1"></i>${totalQty} sản phẩm</span>
         </div>
         <span class="order-status ${status.class}">${status.label}</span>
       </div>
@@ -355,10 +358,15 @@ async function cancelOrder(orderId) {
   if (!confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')) return;
 
   try {
-    await apiCall(`/orders/${orderId}/cancel`, {
+    const res = await apiCall(`/orders/${orderId}/cancel`, {
       method: 'PUT'
     });
     showToast('Đã hủy đơn hàng thành công!');
+    if (res && res.refunded) {
+      setTimeout(() => {
+        showToast('Đã hoàn lại tiền về ngân hàng của quý khách');
+      }, 600);
+    }
     loadOrders();
   } catch (error) {
     showToast(error.message || 'Không thể hủy đơn hàng', 'error');

@@ -137,6 +137,7 @@ const getMyOrders = async (req, res) => {
 
     const [orders, total] = await Promise.all([
       Order.find(filter)
+        .populate('items.book', 'title images price')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
@@ -163,6 +164,7 @@ const getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate('user', 'fullName email phone')
+      .populate('items.book', 'title images price')
       .populate('coupon', 'code discountType discountValue');
 
     if (!order) {
@@ -394,7 +396,7 @@ const vnpayReturn = async (req, res) => {
         const order = await Order.findOne({ vnpTxnRef: txnRef });
         if (order) {
           order.paymentStatus = 'paid';
-          order.paymentMethod = 'VNPay';
+          order.paymentMethod = 'VNPAY';
           await order.save();
         }
       }
@@ -431,10 +433,21 @@ const cancelMyOrder = async (req, res) => {
       });
     }
 
+    // Nếu đơn VNPay đã thanh toán -> đánh dấu hoàn tiền để FE hiển thị thông báo
+    const isVNPayPaid =
+      (order.paymentMethod || '').toUpperCase() === 'VNPAY' &&
+      order.paymentStatus === 'paid';
+
     order.status = 'cancelled';
+    if (isVNPayPaid) order.refundedAt = new Date();
     await order.save();
 
-    res.json({ success: true, message: 'Đã hủy đơn hàng thành công', data: order });
+    res.json({
+      success: true,
+      message: 'Đã hủy đơn hàng thành công',
+      refunded: isVNPayPaid,
+      data: order
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

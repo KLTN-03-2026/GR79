@@ -250,7 +250,8 @@ function changeQuantity(delta) {
 function handleQuantityInput(input) {
   const stock = currentBook?.stock || currentBook?.quantity || 99;
   let val = parseInt(input.value) || 1;
-  val = Math.max(1, Math.min(stock, val));
+  // Cho phép user nhập vượt tồn kho, sẽ báo lỗi khi bấm thêm vào giỏ / mua ngay
+  val = Math.max(1, val);
   currentQuantity = val;
   input.value = val;
   document.getElementById('btnDecrease').disabled = val <= 1;
@@ -268,6 +269,12 @@ async function addToCart() {
   }
 
   if (!currentBook) return;
+
+  const stock = currentBook?.stock || currentBook?.quantity || 0;
+  if (currentQuantity > stock) {
+    showToast(`Số lượng vượt quá tồn kho (còn ${stock} sản phẩm)`, 'error');
+    return;
+  }
 
   try {
     await apiCall('/cart/add', {
@@ -296,6 +303,12 @@ async function buyNow() {
 
   if (!currentBook) return;
 
+  const stock = currentBook?.stock || currentBook?.quantity || 0;
+  if (currentQuantity > stock) {
+    showToast(`Số lượng vượt quá tồn kho (còn ${stock} sản phẩm)`, 'error');
+    return;
+  }
+
   try {
     await apiCall('/cart/add', {
       method: 'POST',
@@ -310,18 +323,7 @@ async function buyNow() {
   }
 }
 
-// ====== UPDATE CART COUNT ======
-async function updateCartCount() {
-  try {
-    const data = await apiCall('/cart');
-    const cart = data.data || data.cart || data;
-    const count = cart.items ? cart.items.reduce((sum, item) => sum + item.quantity, 0) : 0;
-    const badge = document.getElementById('cartCount');
-    if (badge) badge.textContent = count;
-  } catch (error) {
-    // Silent fail
-  }
-}
+// updateCartCount() đã được định nghĩa chung trong utils.js để badge giỏ hàng đồng bộ giữa các trang
 
 // ====== RENDER TABS ======
 function renderTabs(book) {

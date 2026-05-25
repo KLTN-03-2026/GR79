@@ -7,7 +7,7 @@ function renderHeader() {
     <div class="container">
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex gap-3">
-          <span><i class="bi bi-telephone"></i> 0123456789</span>
+          <span><i class="bi bi-telephone"></i> 0934747712</span>
           <span><i class="bi bi-envelope"></i> hotro@sachhub.vn</span>
         </div>
         <div class="d-flex gap-3">
@@ -36,12 +36,12 @@ function renderHeader() {
           <a href="/pages/thong-bao.html" class="header-action-item">
             <i class="bi bi-bell" style="font-size: 20px;"></i>
             <span class="d-none d-md-inline">Thông báo</span>
-            <span class="badge-count" id="notifCount">0</span>
+            <span class="badge-count" id="notifCount" style="display:none;">0</span>
           </a>
           <a href="/pages/gio-hang.html" class="header-action-item">
             <i class="bi bi-cart3" style="font-size: 20px;"></i>
             <span class="d-none d-md-inline">Giỏ hàng</span>
-            <span class="badge-count" id="cartCount">0</span>
+            <span class="badge-count" id="cartCount" style="display:none;">0</span>
           </a>
           <div id="headerAuth">
             <a href="/pages/dang-nhap.html" class="header-action-item">
@@ -117,7 +117,7 @@ function renderFooter() {
           </div>
           <div class="footer-contact-item">
             <i class="bi bi-telephone"></i>
-            <span>0123456789</span>
+            <span>0934747712</span>
           </div>
           <div class="footer-contact-item">
             <i class="bi bi-envelope"></i>
@@ -181,6 +181,9 @@ function initComponents() {
 
   // Update notification count
   updateNotifCount();
+
+  // Update cart count (đồng bộ badge giỏ hàng trên header giữa các trang)
+  if (typeof updateCartCount === 'function') updateCartCount();
 
   // Load chatbot CSS + JS (detect base path từ vị trí components.js)
   const scripts = document.querySelectorAll('script[src*="components.js"]');

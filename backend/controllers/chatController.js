@@ -95,10 +95,10 @@ function buildFallbackReply(userMessage, books, categoryNames) {
       return `🎁 **Mã giảm giá hiện có:**\n\n- **WELCOME20**: giảm 20% (tối đa 50.000đ, đơn từ 100k)\n- **FREESHIP**: miễn phí ship (đơn từ 200k)\n- **SALE50K**: giảm 50.000đ (đơn từ 300k)\n- **SACHHAY10**: giảm 10% (đơn từ 50k)\n\nNhập mã ở trang giỏ hàng để áp dụng nhé! ✨`;
 
     case 'return':
-      return `🔄 **Chính sách đổi trả:**\n\n- Đổi trả trong vòng **7 ngày** kể từ khi nhận hàng\n- Sách phải còn nguyên vẹn, chưa qua sử dụng\n- Liên hệ hotline **0123456789** để được hỗ trợ`;
+      return `🔄 **Chính sách đổi trả:**\n\n- Đổi trả trong vòng **7 ngày** kể từ khi nhận hàng\n- Sách phải còn nguyên vẹn, chưa qua sử dụng\n- Liên hệ hotline **0934747712** để được hỗ trợ`;
 
     case 'contact':
-      return `📞 **Thông tin liên hệ Sách Hub:**\n\n- Hotline: **0123456789**\n- Email: **hotro@sachhub.vn**\n- Địa chỉ: 3 Quang Trung, Hải Châu, TP. Đà Nẵng\n- Hoặc gửi yêu cầu qua [trang Liên hệ](/pages/lien-he.html)`;
+      return `📞 **Thông tin liên hệ Sách Hub:**\n\n- Hotline: **0934747712**\n- Email: **hotro@sachhub.vn**\n- Địa chỉ: 3 Quang Trung, Hải Châu, TP. Đà Nẵng\n- Hoặc gửi yêu cầu qua [trang Liên hệ](/pages/lien-he.html)`;
 
     case 'book_search':
       if (bookList) {
@@ -110,7 +110,7 @@ function buildFallbackReply(userMessage, books, categoryNames) {
       if (bookList) {
         return `Tôi chưa hiểu rõ ý bạn lắm 😅. Trong khi đó, đây là vài cuốn sách hay tại Sách Hub:\n\n${bookList}\n\nBạn có thể hỏi tôi về:\n- 📚 Sách (theo thể loại, tác giả, tên)\n- 🎁 Khuyến mãi\n- 🚚 Vận chuyển\n- 💰 Thanh toán`;
       }
-      return `Xin lỗi, tôi chưa hiểu câu hỏi của bạn. Bạn có thể hỏi tôi về:\n\n- 📚 Tìm sách\n- 🎁 Khuyến mãi hiện có\n- 🚚 Phí vận chuyển\n- 💰 Phương thức thanh toán\n\nHoặc liên hệ hotline **0123456789** để được hỗ trợ trực tiếp.`;
+      return `Xin lỗi, tôi chưa hiểu câu hỏi của bạn. Bạn có thể hỏi tôi về:\n\n- 📚 Tìm sách\n- 🎁 Khuyến mãi hiện có\n- 🚚 Phí vận chuyển\n- 💰 Phương thức thanh toán\n\nHoặc liên hệ hotline **0934747712** để được hỗ trợ trực tiếp.`;
   }
 }
 
@@ -147,7 +147,7 @@ Quy tắc:
 
 Thông tin website:
 - Tên: Sách Hub
-- Hotline: 0123456789
+- Hotline: 0934747712
 - Email: hotro@sachhub.vn
 - Địa chỉ: 3 Quang Trung, Hải Châu, TP. Đà Nẵng
 - Mã giảm giá có sẵn: WELCOME20 (giảm 20%, đơn từ 100k), FREESHIP (miễn phí ship, đơn từ 200k), SALE50K (giảm 50k, đơn từ 300k)
@@ -192,7 +192,7 @@ ${bookContext || 'Hãy hỏi khách về thể loại họ quan tâm'}`;
     res.status(500).json({
       success: false,
       message: error.message || 'Lỗi khi xử lý yêu cầu',
-      reply: 'Xin lỗi, tôi đang gặp sự cố. Vui lòng thử lại sau hoặc liên hệ hotline 0123456789.'
+      reply: 'Xin lỗi, tôi đang gặp sự cố. Vui lòng thử lại sau hoặc liên hệ hotline 0934747712.'
     });
   }
 };

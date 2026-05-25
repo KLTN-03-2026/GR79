@@ -112,6 +112,9 @@ async function loadSavedAddresses() {
       document.head.appendChild(style);
     }
 
+    // Lưu addresses để dùng khi chọn (PHẢI set TRƯỚC khi gọi selectSavedAddress)
+    window._savedAddresses = addresses;
+
     // Tự động chọn địa chỉ mặc định
     const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
     const defaultIndex = addresses.indexOf(defaultAddr);
@@ -121,9 +124,6 @@ async function loadSavedAddresses() {
     document.getElementById('checkoutForm').querySelectorAll('.form-group, .row').forEach(el => {
       if (!el.querySelector('#note')) el.style.display = 'none';
     });
-
-    // Lưu addresses để dùng khi chọn
-    window._savedAddresses = addresses;
   } catch (err) {
     // Không có địa chỉ lưu → prefill bình thường
     const user = getUser();

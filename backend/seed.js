@@ -93,6 +93,8 @@ const seedData = async () => {
     console.log('Categories seeded!');
 
     // ====== BOOKS ======
+
+
     const books = await Book.create([
       {
         title: 'Đắc Nhân Tâm',
